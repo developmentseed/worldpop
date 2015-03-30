@@ -1,0 +1,33 @@
+{
+  "name": "polypop",
+  "version": "0.1.0",
+  "description": "Compute the population within a polygon from GeoJSON population data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/developmentseed/polypop.git"
+  },
+  "keywords": [
+    "population",
+    "polygon",
+    "GeoJSON",
+    "world",
+    "population",
+    "region",
+    "district",
+    "area",
+    "data"
+  ],
+  "author": {
+    "name": "Development Seed",
+    "url": "https://developmentseed.org"
+  },
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/developmentseed/polypop/issues"
+  },
+  "homepage": "https://github.com/developmentseed/polypop"
+}
