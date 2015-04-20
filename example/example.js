@@ -32,7 +32,7 @@ function density (feature) {
 // set up source
 if (/json$/.test(tilesUri)) {
   tilesUri = fs.createReadStream(tilesUri).pipe(geojson.parse())
-} else if (!/^\w*\:\/\//.test(tilesUri)) {
+} else if (!/^[^\/]*\:\/\//.test(tilesUri)) {
   tilesUri = 'mbtiles://' + path.resolve(tilesUri)
 }
 
