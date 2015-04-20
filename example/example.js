@@ -1,20 +1,43 @@
-'use strict';
+var fs = require('fs')
+var path = require('path')
+var geojson = require('geojson-stream')
+var polypop = require('../')
 
-var fs = require('fs');
-var polypop = require('../');
-
-if(process.argv.length < 4) {
-  console.log('Usage: ' + process.argv[0] + ' ' + process.argv[1] +
-    'population-data.json property-name test-polygon.json')
+if (process.argv.length < 5) {
+  console.log('Usage: ' + process.argv[0] + ' ' + process.argv[1],
+    '(tileliveUri|geojson_file|mbtiles_file)',
+    'density_property_name ',
+    'test-polygon.json',
+    '[multiplier=10000]',
+    '[min_zoom=8]',
+    '[max_zoom=12]')
   process.exit()
 }
 
-var data = JSON.parse(fs.readFileSync(process.argv[2]))
+var tilesUri = process.argv[2]
+var densityProp = process.argv[3]
 var testPoly = JSON.parse(fs.readFileSync(process.argv[4]))
-function density(feature) {
-  return feature.properties[process.argv[3]] / 1E5
+var multiplier = +(process.argv[5] || 10000)
+var limits = {
+  min_zoom: +(process.argv[6] || 8),
+  max_zoom: +(process.argv[7] || 12)
 }
 
-var total = polypop(data, density, testPoly);
+if (testPoly.features) testPoly = testPoly.features[0]
 
-console.log('Total population in feature area is', total);
+function density (feature) {
+  return feature.properties[densityProp] / multiplier
+}
+
+// set up source
+if (/json$/.test(tilesUri)) {
+  tilesUri = fs.createReadStream(tilesUri).pipe(geojson.parse())
+} else if (!/^\w*\:\/\//.test(tilesUri)) {
+  tilesUri = 'mbtiles://' + path.resolve(tilesUri)
+}
+
+polypop(limits, tilesUri, density, testPoly, function (err, total) {
+  if (err) console.error(err)
+  console.log('Total population: ', total)
+})
+
