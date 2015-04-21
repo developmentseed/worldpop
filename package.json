@@ -45,7 +45,7 @@
     "turf-area": "^1.1.1",
     "turf-buffer": "^1.0.4",
     "turf-intersect": "^1.4.2",
-    "vt-geojson": "^1.0.1"
+    "vt-geojson": "^1.0.6"
   },
   "devDependencies": {
     "JSONStream": "^0.10.0",
