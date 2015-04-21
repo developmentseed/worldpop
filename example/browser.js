@@ -63,5 +63,3 @@ window.calculateTotal = function () {
 console.log(params)
 console.log('Options (window.options):', window.options)
 console.log('Usage: window.calculateTotal()')
-
-
