@@ -1,8 +1,5 @@
 window.myDebug = require('debug')
-
 /* global L */
-require('mapbox.js')
-require('leaflet-draw')
 require('./css/styles.css')
 var url = require('url')
 var xtend = require('xtend')
