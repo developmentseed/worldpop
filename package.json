@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js",
-    "start": "beefy app.js"
+    "develop": "beefy --cwd assets app.js:js/main.js"
   },
   "repository": {
     "type": "git",

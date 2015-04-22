@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- '0.12'
+
+env:
+  global:
+  - GH_REF=github.com/developmentseed/oil-climate-index.git
+
+before_install:
+- chmod +x ./.build_scripts/deploy.sh
+
+script:
+- ./tool/build.sh
+
+after_success:
+- ./tool/deploy.sh
