@@ -1,9 +1,10 @@
 window.myDebug = require('debug')
 /* global L */
-require('./css/styles.css')
 var qs = require('querystring')
 var xtend = require('xtend')
+var dragDrop = require('drag-drop/buffer')
 var worldpop = require('./')
+require('./css/styles.css')
 
 var accessToken = 'pk.eyJ1IjoiZGV2c2VlZCIsImEiOiJWQlQ1NlNVIn0.IT_b8KVeZDvOFZLWF7DpvQ'
 
@@ -38,18 +39,17 @@ map.on('draw:edited', (e) => { e.layers.eachLayer(calculateTotal) })
 
 var options = parseHash()
 if (options.polygon) {
-  try {
-    options.polygon = decodeURIComponent(options.polygon)
-    L.geoJson(JSON.parse(options.polygon), {
-      onEachFeature: (feat, layer) => {
-        calculateTotal({ layer })
-      }
-    })
-  } catch(e) {
-    console.error(e)
-  }
+  options.polygon = decodeURIComponent(options.polygon)
+  handleGeoJSON(options.polygon)
 }
 updateHash()
+
+dragDrop(document.body, function (files) {
+  files.forEach(function (file) {
+    console.log('file', file, file.toString())
+    handleGeoJSON(file)
+  })
+})
 
 function calculateTotal ({layer}) {
   var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
@@ -70,6 +70,18 @@ function calculateTotal ({layer}) {
       ${result.totalArea} (${result.polygonArea}) m^2`)
     layer.openPopup()
   })
+}
+
+function handleGeoJSON (geojson) {
+  try {
+    L.geoJson(JSON.parse(geojson), {
+      onEachFeature: (feat, layer) => {
+        calculateTotal({ layer })
+      }
+    })
+  } catch(e) {
+    console.error(e)
+  }
 }
 
 function density (feature) {
