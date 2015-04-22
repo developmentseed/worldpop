@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js",
-    "start": "beefy example/map.js"
+    "start": "beefy app.js"
   },
   "repository": {
     "type": "git",
@@ -39,15 +39,14 @@
     "mapbox.js": "^2.1.8",
     "mbtiles": "^0.7.9",
     "through2": "^0.6.5",
-    "through2-map": "^1.4.0",
-    "through2-reduce": "^0.3.0",
     "tile-cover": "^2.4.1",
     "tilejson": "git://github.com/anandthakker/node-tilejson.git",
     "tilelive": "^5.6.2",
     "turf-area": "^1.1.1",
     "turf-buffer": "^1.0.4",
     "turf-intersect": "^1.4.2",
-    "vt-geojson": "^1.0.6"
+    "vt-geojson": "^1.0.6",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "JSONStream": "^0.10.0",

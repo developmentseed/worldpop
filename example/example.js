@@ -38,6 +38,6 @@ if (/json$/.test(tilesUri)) {
 
 polypop(limits, tilesUri, density, testPoly, function (err, total) {
   if (err) console.error(err)
-  console.log('Total population: ', total)
+  console.log(total)
 })
 

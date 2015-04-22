@@ -1,12 +1,12 @@
 'use strict'
 
 var turfarea = require('turf-area')
-var reduce = require('through2-reduce')
-var map = require('through2-map')
+var through = require('through2')
 var tiledData = require('./lib/tiled-data')
 var clip = require('./lib/clip')
 var fix = require('./lib/fix')
 var debug = require('debug')('polypop:main')
+var debugTotal = require('debug')('polypop:totalTime')
 
 /**
  * Computes the total population within the given polygon.
@@ -15,11 +15,14 @@ var debug = require('debug')('polypop:main')
  * @param source - A GeoJSON Feature stream or Tilelive uri for the tiled
  * population data, where each feature represents an area of constant
  * population density.
- * @param densityFn - A function that accepts a feature from `dataset` and
+ * @param densityFn - A function that accepts a feature from `source` and
  * returns the population density for that feature.
  * @param {Feature<Polygon>} poly - The polygon whose interior population we
  * want.
- * @param cb - completion callback, called with total pop.
+ * @param cb - completion callback, called with {totalPopulation, totalArea,
+ * polygonArea}.
+ * @return - a GeoJSON feature stream of constant-population polygons, clipped
+ * to the poly of interest
  */
 module.exports = function getTotalForPoly (opts, source, densityFn, poly, cb) {
   if (typeof cb === 'undefined') {
@@ -36,26 +39,37 @@ module.exports = function getTotalForPoly (opts, source, densityFn, poly, cb) {
     source = tiledData(source, poly, opts)
   }
 
-  source
+  var result = {
+    count: 0,
+    totalPopulation: 0,
+    totalArea: 0,
+    polygonArea: turfarea(poly)
+  }
+
+  debugTotal('start')
+  return source
     .pipe(fix())
     .pipe(clip(poly))
-    .pipe(map.obj(pop.bind(null, densityFn, poly)))
-    .pipe(reduce({objectMode: true}, function (a, b) { return a + b }))
-    .on('data', function (total) {
-      debug('Total', total)
-      cb(null, total)
+    .pipe(through.obj(function write (feat, _, next) {
+      next(null, popped(densityFn, poly, feat))
+    }))
+    .on('data', function (feat) {
+      result.totalPopulation += feat.properties.population
+      result.totalArea += feat.properties.area
+      result.count++
+    })
+    .on('end', function () {
+      debugTotal('end')
+      debugTotal(result)
+      cb(null, result)
     })
     .on('error', cb)
 }
 
-function pop (densityFn, poly, intersection) {
-  var area = turfarea(intersection)
-  var density = densityFn(intersection)
-  var areaTotal = area * density
-
-  debug('Area of intersection (sq meters)', area)
-  debug('Density of feature', density)
-  debug('Population in feature area', areaTotal)
-
-  return areaTotal
+function popped (densityFn, poly, feat) {
+  var density = densityFn(feat)
+  feat.properties.area = turfarea(feat)
+  feat.properties.population = feat.properties.area * density
+  debug(feat.properties)
+  return feat
 }
