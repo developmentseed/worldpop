@@ -1,8 +1,8 @@
 /* global L */
 require('mapbox.js')
 require('leaflet-draw')
-require('./styles.css')
-var polypop = require('../')
+require('./css/styles.css')
+var polypop = require('./')
 
 var accessToken = 'pk.eyJ1IjoiZGV2c2VlZCIsImEiOiJWQlQ1NlNVIn0.IT_b8KVeZDvOFZLWF7DpvQ'
 
