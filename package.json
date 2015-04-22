@@ -1,5 +1,5 @@
 {
-  "name": "polypop",
+  "name": "worldpop",
   "version": "0.1.0",
   "description": "Compute the population within a polygon from GeoJSON population data",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/developmentseed/polypop.git"
+    "url": "https://github.com/developmentseed/worldpop.git"
   },
   "keywords": [
     "population",
@@ -28,9 +28,9 @@
   },
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/developmentseed/polypop/issues"
+    "url": "https://github.com/developmentseed/worldpop/issues"
   },
-  "homepage": "https://github.com/developmentseed/polypop",
+  "homepage": "https://github.com/developmentseed/worldpop",
   "dependencies": {
     "debug": "^2.1.3",
     "geojson-stream": "0.0.0",
