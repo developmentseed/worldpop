@@ -6,7 +6,7 @@ Clone the repo, then:
 ```
 cd worldpop
 npm install
-npm start
+npm run-script develop
 ```
 
 
