@@ -4,10 +4,8 @@ node_js:
 
 env:
   global:
-  - GH_REF=github.com/developmentseed/oil-climate-index.git
-
-before_install:
-- chmod +x ./.build_scripts/deploy.sh
+  - GH_REF=github.com/developmentseed/worldpop
+  - secure: "V9/6aZsnrPQoS+IoLtfRgtysfUYBJHnYc/rSxFEJf4iQuOoeYSzptlhriYlNQhWZ0zRs9tIOSUd0fS0kt+BI/CNwn2PbY6J/X3GI737lyxBrOTlAA52I2ro4AARPxjLieMuwP+aurP4U+fL5ieIPOiW7j4HWUErlkiirHbhRkdA="
 
 script:
 - ./tool/build.sh
