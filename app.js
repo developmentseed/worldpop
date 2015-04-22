@@ -52,22 +52,22 @@ drawControl.addTo(map)
 map.on('draw:created', calculateTotal)
 map.on('draw:edited', (e) => { e.layers.eachLayer(calculateTotal) })
 
-function calculateTotal (e) {
+function calculateTotal ({layer}) {
   var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
     '{mapid}.json?access_token={access}'
     .split('{mapid}').join(options.source)
     .split('{access}').join(accessToken)
 
-  var testPoly = e.layer.toGeoJSON()
+  var testPoly = layer.toGeoJSON()
 
   spinner.classList.add('show')
   worldpop(options, tilesUri, density, testPoly, function (err, result) {
     if (err) console.error(err)
     spinner.classList.remove('show')
     featureGroup.clearLayers()
-    featureGroup.addLayer(e.layer)
-    e.layer.bindPopup(`${result.totalPopulation} people in
+    featureGroup.addLayer(layer)
+    layer.bindPopup(`${result.totalPopulation} people in
       ${result.totalArea} (${result.polygonArea}) m^2`)
-    e.layer.openPopup()
+    layer.openPopup()
   })
 }
