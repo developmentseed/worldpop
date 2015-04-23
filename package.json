@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js",
-    "develop": "beefy --cwd assets app.js:js/main.js"
+    "develop": "budo app.js:js/main.js --dir assets --verbose --live | garnish"
   },
   "repository": {
     "type": "git",
@@ -50,14 +50,18 @@
   "devDependencies": {
     "JSONStream": "^0.10.0",
     "babelify": "^6.0.2",
-    "beefy": "^2.1.5",
     "browserify": "^9.0.8",
+    "budo": "^3.1.1",
     "concat-stream": "^1.4.8",
+    "cssnext": "^1.3.0",
     "cssy": "^1.0.1",
+    "garnish": "^2.1.3",
     "minimist": "^1.1.1",
     "mkdirp": "^0.5.0",
     "pbf": "^1.3.2",
     "pg-query": "^0.11.0",
+    "postcss": "^4.1.5",
+    "postcss-nested": "^0.2.2",
     "tape": "^4.0.0",
     "turf-kinks": "^1.3.1",
     "vector-tile": "^1.1.2",
@@ -66,7 +70,12 @@
   },
   "browserify": {
     "transform": [
-      "browserify-css",
+      [
+        "cssy",
+        {
+          "processor": "./tool/post-css"
+        }
+      ],
       "babelify"
     ]
   }

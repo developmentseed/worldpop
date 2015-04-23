@@ -4,7 +4,9 @@ var qs = require('querystring')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
 var worldpop = require('./')
-require('./css/styles.css')
+var styles = require('./css/styles.css')
+
+styles()
 
 var accessToken = 'pk.eyJ1IjoiZGV2c2VlZCIsImEiOiJWQlQ1NlNVIn0.IT_b8KVeZDvOFZLWF7DpvQ'
 
