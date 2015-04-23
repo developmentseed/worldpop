@@ -1,12 +1,42 @@
 @import "atebits.css";
 
+:root {
+}
+
 body {
-  background-color: #eeeeff;
+  background-color: #fff;
   margin: 0;
-  padding: 0;
+  padding: 0 1em;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body > header {
+}
+
+body > footer {
+}
+
+body > main {
+  height: calc(100vh - 100px);
+  flex: 1;
+  display: flex;
+  width: 100%;
+}
+
+.map-view {
+  position: relative;
+  flex: 3;
+}
+
+.about-view {
+  flex: 1;
+  padding: 1em;
 }
 
 .drag:before {
+  background-color: #eeeeff;
   background-color: rgba(255, 255, 255, .5);
   content: "Drop your GeoJSON!";
   font-size: 30px;
@@ -20,15 +50,7 @@ body {
   margin: auto;
 }
 
-#map {
-  position:absolute;
-  z-index: 100;
-  top:0;
-  bottom:0;
-  width:100%;
-}
-
-#spinner {
+.spinner {
   display: none;
   position: absolute;
   z-index: 200;
@@ -38,10 +60,11 @@ body {
   right: 0;
   width: 100%;
   margin: auto;
+  background-color: rgb(255, 255, 255);
   background-color: rgba(255, 255, 255, .25);
 }
 
-#spinner.show { display: block; }
+.spinner.show { display: block; }
 
 .atebits:not(:required) {
   position: absolute;
@@ -51,3 +74,31 @@ body {
   right: 0;
   margin: auto;
 }
+
+.map {
+  position:absolute;
+  z-index: 100;
+  top:0;
+  bottom:0;
+  width:100%;
+}
+
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+
+}
+
+@import "./h5bp-helpers.css";
+@import "./h5bp-print.css";
+

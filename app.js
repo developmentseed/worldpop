@@ -10,8 +10,6 @@ var accessToken = require('./app/mapbox-access-token')
 var styles = require('./css/styles.css')
 styles()
 
-document.body.innerHTML = '<div id="map"></div><div id="spinner"><div class="atebits">Calculating</div></div>'
-
 var spinner = document.querySelector('#spinner')
 var map = new MapView('map', calculateTotal)
 

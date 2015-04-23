@@ -12,7 +12,6 @@
         <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
         <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
         <link rel="stylesheet" href="css/normalize.min.css">
-        <link rel="stylesheet" href="css/main.css">
 
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -24,6 +23,32 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <header>
+          <h1>WorldPop Data Explorer</h1>
+        </header>
+        <main>
+          <section id="map-view" class="map-view">
+            <div id="map" class="map"></div>
+            <div id="spinner" class="spinner">
+              <div class="atebits">Calculating</div>
+            </div>
+          </section>
+          <section id="about-view" class="about-view">
+            <h2>About WorldPop</h2>
+            <p class=""> The WorldPop project was initiated in October 2013 to
+            combine the AfriPop, AsiaPop and AmeriPop population mapping
+            projects.  It aims to provide an open access archive of spatial
+            demographic datasets for Central and South America, Africa and Asia
+            to support development and health applications. The methods used
+            are designed with full open access and operational application in
+            mind, using transparent, fully documented and shareable methods to
+            produce easily updatable maps with accompanying metadata.  </p>
+          </section>
+        </main>
+        <footer>
+        Made with &hearts; by <a class="" href="https://developmentseed.org">Development Seed</a>.
+        OTHER ACKNOWLEDGEMENTS.
+        </footer>
         <script src="js/main.js"></script>
     </body>
 </html>
