@@ -1,96 +1,52 @@
 window.myDebug = require('debug')
-/* global L */
 var qs = require('querystring')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
+
 var worldpop = require('./')
+var MapView = require('./app/map-view')
+var accessToken = require('./app/mapbox-access-token')
+
 var styles = require('./css/styles.css')
-
 styles()
-
-var accessToken = 'pk.eyJ1IjoiZGV2c2VlZCIsImEiOiJWQlQ1NlNVIn0.IT_b8KVeZDvOFZLWF7DpvQ'
-
-/**
- * Set up the map.
- */
 
 document.body.innerHTML = '<div id="map"></div><div id="spinner"><div class="atebits">Calculating</div></div>'
 
 var spinner = document.querySelector('#spinner')
+var map = new MapView('map', calculateTotal)
 
-L.mapbox.accessToken = accessToken
-var map = window.themap = L.mapbox.map('map', 'mapbox.light')
-  .setView([-1.9449, 29.8806], 9)
-
-var featureGroup = L.featureGroup().addTo(map)
-new L.Control.Draw({
-  edit: {
-    featureGroup: featureGroup
-  },
-  draw: {
-    polygon: true,
-    polyline: false,
-    rectangle: false,
-    circle: false,
-    marker: false
-  }
-}).addTo(map)
-
-map.on('draw:created', calculateTotal)
-map.on('draw:edited', (e) => { e.layers.eachLayer(calculateTotal) })
-
-var options = parseHash()
+var options = parseOptions()
 if (options.polygon) {
   options.polygon = decodeURIComponent(options.polygon)
-  handleGeoJSON(options.polygon)
+  map.setPolygon(options.polygon)
 }
 updateHash()
 
 dragDrop(document.body, function (files) {
   files.forEach(function (file) {
     console.log('file', file, file.toString())
-    handleGeoJSON(file)
+    map.setPolygon(file)
   })
 })
 
 function calculateTotal ({layer}) {
   var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
-    '{mapid}.json?access_token={access}'
-    .split('{mapid}').join(options.source)
-    .split('{access}').join(accessToken)
-
+    `${options.source}.json?access_token=${accessToken}`
   var testPoly = layer.toGeoJSON()
   updateHash(testPoly)
-
   spinner.classList.add('show')
   worldpop(options, tilesUri, density, testPoly, function (err, result) {
     if (err) console.error(err)
     spinner.classList.remove('show')
-    featureGroup.clearLayers()
-    featureGroup.addLayer(layer)
-    layer.bindPopup(`${result.totalPopulation} people in
-      ${result.totalArea} (${result.polygonArea}) m^2`)
-    layer.openPopup()
+    map.updatePolygon(layer, result)
   })
-}
-
-function handleGeoJSON (geojson) {
-  try {
-    L.geoJson(JSON.parse(geojson), {
-      onEachFeature: (feat, layer) => {
-        calculateTotal({ layer })
-      }
-    })
-  } catch(e) {
-    console.error(e)
-  }
 }
 
 function density (feature) {
   return feature.properties[options.densityProp] / options.multiplier
 }
 
-function parseHash () {
+function parseOptions () {
   var defaults = {
     source: 'devseed.oexqd7vi',
     densityProp: 'density',
