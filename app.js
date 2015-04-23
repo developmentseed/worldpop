@@ -28,15 +28,17 @@ dragDrop(document.body, function (files) {
 })
 
 function calculateTotal (layer) {
+  console.log('layer', layer)
   var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
     `${options.source}.json?access_token=${accessToken}`
   var testPoly = layer.toGeoJSON()
-  updateHash(testPoly)
   spinner.classList.add('show')
   worldpop(options, tilesUri, density, testPoly, function (err, result) {
     if (err) console.error(err)
+    testPoly.properties = xtend(testPoly.properties, result)
+    map.updatePolygon(layer, testPoly)
+    updateHash(map.drawnPolygonsToGeoJSON())
     spinner.classList.remove('show')
-    map.updatePolygon(layer, result)
   })
 }
 
@@ -65,6 +67,7 @@ function parseOptions () {
 
 function updateHash (poly) {
   if (poly) {
+    console.log('outgoing', poly)
     options.polygon = encodeURIComponent(JSON.stringify(poly))
   }
   window.location.hash = Object.keys(options)

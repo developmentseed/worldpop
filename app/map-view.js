@@ -1,4 +1,5 @@
 /* global L */
+var fc = require('turf-featurecollection')
 var accessToken = require('./mapbox-access-token')
 module.exports = class MapView {
 
@@ -26,30 +27,46 @@ module.exports = class MapView {
     this.map.on('draw:edited', ({layers}) => layers.eachLayer(onPolygonChange))
   }
 
-  updatePolygon (layer, result) {
-    // only allow one polygon
-    this.featureGroup.clearLayers()
-    this.featureGroup.addLayer(layer)
+  /**
+   * @param {GeoJSON} annotatedPoly - A GeoJSON polygon feature, annotated with
+   * `totalPopulation`, `totalArea`, and `polygonArea` properties.
+   */
+  updatePolygon (layer, annotatedPoly) {
+    let newLayer = L.geoJson(annotatedPoly)
+    this.featureGroup.removeLayer(layer)
+    this.featureGroup.addLayer(newLayer)
 
+    let props = annotatedPoly.properties
     // attach popup with population data
-    layer.bindPopup(`${result.totalPopulation} people in
-      ${result.totalArea} (${result.polygonArea}) m^2`)
-    layer.openPopup()
+    newLayer.bindPopup(`${props.totalPopulation} people in
+      ${props.totalArea} (${props.polygonArea}) m^2`)
+    newLayer.openPopup()
   }
 
   /**
-   * @param {string|GeoJSON} A GeoJSON polygon feature.
+   * @param {string|GeoJSON} geojson - A GeoJSON polygon feature.
    */
   setPolygon (geojson) {
     try {
-      L.geoJson(JSON.parse(geojson), {
+      let parsed = JSON.parse(geojson)
+      console.log('incoming geojson', parsed)
+      L.geoJson(parsed, {
         onEachFeature: (feat, layer) => {
-          console.log('layer', layer.toGeoJSON)
+          console.log('feature', feat)
           this.onPolygonChange(layer)
         }
       })
     } catch(e) {
       console.error(e)
     }
+  }
+
+  drawnPolygonsToGeoJSON () {
+    let features = []
+    this.featureGroup.eachLayer((layer) => {
+      console.log('layer', layer.toGeoJSON())
+      features.push(layer.toGeoJSON().features)
+    })
+    return fc(Array.prototype.concat.apply([], features))
   }
 }
