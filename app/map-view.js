@@ -22,8 +22,8 @@ module.exports = class MapView {
       }
     }).addTo(this.map)
 
-    this.map.on('draw:created', onPolygonChange)
-    this.map.on('draw:edited', (e) => { e.layers.eachLayer(onPolygonChange) })
+    this.map.on('draw:created', ({layer}) => onPolygonChange(layer))
+    this.map.on('draw:edited', ({layers}) => layers.eachLayer(onPolygonChange))
   }
 
   updatePolygon (layer, result) {
@@ -44,7 +44,8 @@ module.exports = class MapView {
     try {
       L.geoJson(JSON.parse(geojson), {
         onEachFeature: (feat, layer) => {
-          this.onPolygonChange({ layer })
+          console.log('layer', layer.toGeoJSON)
+          this.onPolygonChange(layer)
         }
       })
     } catch(e) {

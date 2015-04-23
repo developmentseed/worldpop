@@ -27,7 +27,7 @@ dragDrop(document.body, function (files) {
   })
 })
 
-function calculateTotal ({layer}) {
+function calculateTotal (layer) {
   var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
     `${options.source}.json?access_token=${accessToken}`
   var testPoly = layer.toGeoJSON()
