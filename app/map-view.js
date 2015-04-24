@@ -11,9 +11,6 @@ module.exports = class MapView {
 
     this.featureGroup = L.featureGroup().addTo(this.map)
     new L.Control.Draw({
-      edit: {
-        featureGroup: this.featureGroup
-      },
       draw: {
         polygon: true,
         polyline: false,
@@ -51,6 +48,11 @@ module.exports = class MapView {
    * @param {string|GeoJSON} geojson - A GeoJSON polygon feature.
    */
   setPolygon (geojson) {
+    var self = this
+    this.featureGroup.eachLayer(function (layer) {
+      self.featureGroup.removeLayer(layer)
+    })
+    if (!geojson) return
     try {
       let parsed = JSON.parse(geojson)
       console.log('incoming geojson', parsed)

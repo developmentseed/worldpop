@@ -2,6 +2,7 @@ window.myDebug = require('debug')
 var qs = require('querystring')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
+var hash = require('hash-change')
 var worldpop = require('./')
 var MapView = require('./app/map-view')
 var Progress = require('./app/progress')
@@ -13,12 +14,8 @@ styles()
 var map = new MapView('map', calculateTotal)
 var progress = new Progress(document.querySelector('#progress'))
 
-var options = parseOptions()
-if (options.polygon) {
-  options.polygon = decodeURIComponent(options.polygon)
-  map.setPolygon(options.polygon)
-}
-updateHash()
+var options = {}
+parseOptions()
 
 dragDrop(document.body, function (files) {
   files.forEach(function (file) {
@@ -65,19 +62,31 @@ function parseOptions () {
 
   var hash = window.location.hash || '#'
   var params = qs.parse(hash.slice(1).split(',').join('&'))
-  var options = xtend(defaults, params)
+  console.log('parseOptions', hash)
+
+  options = xtend(defaults, params)
 
   void ['multiplier', 'min_zoom', 'max_zoom']
     .forEach((k) => options[k] = Number(options[k]))
 
-  return options
+  if (options.polygon) {
+    options.polygon = decodeURIComponent(options.polygon)
+  }
+
+  updateHash()
+  map.setPolygon(options.polygon)
 }
 
 function updateHash (poly) {
+  console.log('updateHash', poly)
   if (poly) {
-    console.log('outgoing', poly)
     options.polygon = encodeURIComponent(JSON.stringify(poly))
   }
+
+  hash.removeAllListeners()
+  hash.once('change', function () {
+    hash.on('change', parseOptions)
+  })
   window.location.hash = Object.keys(options)
     .map((k) => [k, options[k]].map(encodeURIComponent).join('='))
     .join(',')
