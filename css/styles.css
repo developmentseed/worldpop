@@ -1,4 +1,4 @@
-@import "atebits.css";
+@import './loader.css';
 
 :root {
 }
@@ -50,7 +50,7 @@ body > main {
   margin: auto;
 }
 
-.spinner {
+.progress {
   display: none;
   position: absolute;
   z-index: 200;
@@ -61,18 +61,18 @@ body > main {
   width: 100%;
   margin: auto;
   background-color: rgb(255, 255, 255);
-  background-color: rgba(255, 255, 255, .25);
+  background-color: rgba(255, 255, 255, .85);
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+.progress.show { display: flex; }
+.progress .current {
+  max-width: 50%
+}
+.progress .bar {
 
-.spinner.show { display: block; }
-
-.atebits:not(:required) {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
 }
 
 .map {

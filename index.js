@@ -1,5 +1,6 @@
 'use strict'
 
+var xtend = require('xtend')
 var turfarea = require('turf-area')
 var through = require('through2')
 var tiledData = require('./lib/tiled-data')
@@ -63,7 +64,8 @@ function worldpop (opts, cb) {
       result.totalArea += feat.properties.area
       result.count++
       if (opts.progress && result.count % progressFrequency === 0) {
-        opts.progress(result)
+        var snap = xtend({}, result)
+        setTimeout(function () { opts.progress(snap) }, 0)
       }
     })
     .on('end', function () {

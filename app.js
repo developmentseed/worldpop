@@ -2,16 +2,16 @@ window.myDebug = require('debug')
 var qs = require('querystring')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
-
 var worldpop = require('./')
 var MapView = require('./app/map-view')
+var Progress = require('./app/progress')
 var accessToken = require('./app/mapbox-access-token')
 
 var styles = require('./css/styles.css')
 styles()
 
-var spinner = document.querySelector('#spinner')
 var map = new MapView('map', calculateTotal)
+var progress = new Progress(document.querySelector('#progress'))
 
 var options = parseOptions()
 if (options.polygon) {
@@ -28,17 +28,25 @@ dragDrop(document.body, function (files) {
 })
 
 function calculateTotal (layer) {
-  console.log('layer', layer)
+  progress.reset()
   var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
     `${options.source}.json?access_token=${accessToken}`
   var testPoly = layer.toGeoJSON()
-  spinner.classList.add('show')
-  worldpop(options, tilesUri, density, testPoly, function (err, result) {
+
+  worldpop({
+    source: tilesUri,
+    density: density,
+    polygon: testPoly,
+    min_zoom: 11,
+    max_zoom: 11,
+    progress: progress.update.bind(progress),
+    progressFrequency: 1000
+  }, function (err, result) {
     if (err) console.error(err)
     testPoly.properties = xtend(testPoly.properties, result)
     map.updatePolygon(layer, testPoly)
     updateHash(map.drawnPolygonsToGeoJSON())
-    spinner.classList.remove('show')
+    progress.finish(result)
   })
 }
 
