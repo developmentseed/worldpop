@@ -45,7 +45,7 @@
     "turf-buffer": "^1.0.4",
     "turf-featurecollection": "^1.0.1",
     "turf-intersect": "^1.4.2",
-    "vt-geojson": "^1.0.7",
+    "vt-geojson": "^1.0.8",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
