@@ -37,7 +37,7 @@ function calculateTotal (layer) {
     min_zoom: 11,
     max_zoom: 11,
     progress: progress.update.bind(progress),
-    progressFrequency: 1000
+    progressFrequency: 100
   }, function (err, result) {
     if (err) console.error(err)
     testPoly.properties = xtend(testPoly.properties, result)
