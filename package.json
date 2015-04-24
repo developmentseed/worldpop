@@ -43,8 +43,12 @@
     "tilejson": "git://github.com/anandthakker/node-tilejson.git",
     "tilelive": "^5.6.2",
     "turf-area": "^1.1.1",
+    "turf-bbox-polygon": "^1.0.1",
     "turf-buffer": "^1.0.4",
+    "turf-explode": "^1.0.1",
+    "turf-extent": "^1.0.4",
     "turf-featurecollection": "^1.0.1",
+    "turf-inside": "^1.1.4",
     "turf-intersect": "^1.4.2",
     "vt-geojson": "^1.0.8",
     "xtend": "^4.0.0"

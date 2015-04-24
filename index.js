@@ -52,7 +52,7 @@ function worldpop (opts, cb) {
     polygonArea: turfarea(poly)
   }
 
-  debugTotal('start')
+  debugTotal('start', Date.now())
   return source
     .pipe(fix())
     .pipe(clip(poly))
@@ -69,7 +69,7 @@ function worldpop (opts, cb) {
       }
     })
     .on('end', function () {
-      debugTotal('end')
+      debugTotal('end', Date.now())
       debugTotal(result)
       cb(null, result)
     })
