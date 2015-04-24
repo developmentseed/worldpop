@@ -8,6 +8,7 @@ env:
   - secure: "V9/6aZsnrPQoS+IoLtfRgtysfUYBJHnYc/rSxFEJf4iQuOoeYSzptlhriYlNQhWZ0zRs9tIOSUd0fS0kt+BI/CNwn2PbY6J/X3GI737lyxBrOTlAA52I2ro4AARPxjLieMuwP+aurP4U+fL5ieIPOiW7j4HWUErlkiirHbhRkdA="
 
 script:
+- npm test
 - ./tool/build.sh
 
 after_success:

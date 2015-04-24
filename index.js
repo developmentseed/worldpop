@@ -8,36 +8,39 @@ var fix = require('./lib/fix')
 var debug = require('debug')('polypop:main')
 var debugTotal = require('debug')('polypop:totalTime')
 
+var DEFAULT_PROGRESS_FREQ = 100
+
 /**
  * Computes the total population within the given polygon.
  *
- * @param opts - Options: { min_zoom: 8, max_zoom: 12 }
- * @param source - A GeoJSON Feature stream or Tilelive uri for the tiled
- * population data, where each feature represents an area of constant
- * population density.
- * @param densityFn - A function that accepts a feature from `source` and
- * returns the population density for that feature.
- * @param {Feature<Polygon>} poly - The polygon whose interior population we
- * want.
+ * @param opts - Options
+ * @param {Number} opts.max_zoom
+ * @param {Number} opts.min_zoom
+ * @param {ReadableStream<Feature>|string} opts.source - A GeoJSON Feature
+ * stream or Tilelive uri for the tiled population data, where each feature
+ * represents an area of constant population density.
+ * @param {function} opts.density - A function that accepts a feature from
+ * `source` and returns the population density for that feature.
+ * @param {Feature<Polygon>} opts.polygon - The polygon whose interior
+ * population we want.
+ * @param {function} opts.progress - A progress callback, called periodically
+ * with the current state of {totalPopulation, totalArea, polygonArea}. (You can
+ * estimate % complete with totalArea/polygonArea.)
+ * @param {Number} opts.progressFrequency - Frequency (in # of features) of
+ * progress callback.
  * @param cb - completion callback, called with {totalPopulation, totalArea,
  * polygonArea}.
  * @return - a GeoJSON feature stream of constant-population polygons, clipped
  * to the poly of interest
  */
-module.exports = function getTotalForPoly (opts, source, densityFn, poly, cb) {
-  if (typeof cb === 'undefined') {
-    cb = poly
-    poly = densityFn
-    densityFn = source
-    source = opts
-    opts = {}
-  }
+module.exports = function getTotalForPoly (opts, cb) {
   opts.min_zoom = opts.min_zoom || 8
   opts.max_zoom = opts.max_zoom || 12
 
-  if (typeof source.pipe !== 'function') {
-    source = tiledData(source, poly, opts)
-  }
+  var poly = opts.polygon
+  var source = typeof opts.source.pipe === 'function' ? opts.source :
+    tiledData(opts.source, poly, opts)
+  var progressFrequency = opts.progressFrequency || DEFAULT_PROGRESS_FREQ
 
   var result = {
     count: 0,
@@ -51,12 +54,15 @@ module.exports = function getTotalForPoly (opts, source, densityFn, poly, cb) {
     .pipe(fix())
     .pipe(clip(poly))
     .pipe(through.obj(function write (feat, _, next) {
-      next(null, popped(densityFn, poly, feat))
+      next(null, popped(opts.density, poly, feat))
     }))
     .on('data', function (feat) {
       result.totalPopulation += feat.properties.population
       result.totalArea += feat.properties.area
       result.count++
+      if (opts.progress && result.count % progressFrequency === 0) {
+        opts.progress(result)
+      }
     })
     .on('end', function () {
       debugTotal('end')
