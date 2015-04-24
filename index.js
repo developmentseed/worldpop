@@ -10,6 +10,8 @@ var debugTotal = require('debug')('polypop:totalTime')
 
 var DEFAULT_PROGRESS_FREQ = 100
 
+module.exports = worldpop
+
 /**
  * Computes the total population within the given polygon.
  *
@@ -33,7 +35,7 @@ var DEFAULT_PROGRESS_FREQ = 100
  * @return - a GeoJSON feature stream of constant-population polygons, clipped
  * to the poly of interest
  */
-module.exports = function getTotalForPoly (opts, cb) {
+function worldpop (opts, cb) {
   opts.min_zoom = opts.min_zoom || 8
   opts.max_zoom = opts.max_zoom || 12
 
