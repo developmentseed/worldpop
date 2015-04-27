@@ -84,13 +84,14 @@ body > main {
 }
 
 .about-view {
-  flex: 1;
+  flex: 1 15em;
   padding: 0 1em;
+  overflow: scroll;
 }
 
 .map-view {
   position: relative;
-  flex: 3 400px;
+  flex: 2 400px;
 }
 
 .map {
