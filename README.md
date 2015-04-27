@@ -1,12 +1,33 @@
 # WorldPop Data Extractor
 [![Build Status](https://travis-ci.org/developmentseed/worldpop.svg?branch=master)](https://travis-ci.org/developmentseed/worldpop)
 
-Compute the population within a polygon from GeoJSON population data. 
+Compute the population within a given polygon using the high resolution
+WorldPop population dataset. Go to
+[http://devseed.com/worldpop](http://devseed.com/worldpop) and draw some
+polygons.
 
-Go to [http://devseed.com/worldpop](http://devseed.com/worldpop) and draw
-some polygons.
+# About
 
-## Node API
+The WorldPop Data Explorer is a web tool (and underlying Node module) designed
+to enable useful compuation and analysis using the
+[WorldPop](http://www.worldpop.co.uk) dataset. It makes heavy use of, among
+other things, [Mapbox Vector
+Tiles](https://www.mapbox.com/developers/vector-tiles/), and
+[Turf](http://turfjs.org/) to enable efficient storage, access to, and
+computation over the otherwise prohibitively large WorldPop dataset.
+
+**NOTE:** This tool is currently in an early beta stage, and is under very active
+development. At present, the web app only supports Chrome, and only a few countries'
+data is available.
+
+## Related Repositories:
+
+ - [worldpop-data](/developmentseed/worldpop-data): the data processing
+   pipeline, taking WorldPop GeoTIFFs and producing Mapbox Vector Tiles.
+ - [worldpop-basemap.tm2](/developmentseed/worldpop-basemap.tm2): the
+   Mapbox Studio project for the web app's base map.
+
+# Node API
 ```
 var worldpop = require('worldpop')
 worldpop({
@@ -20,7 +41,7 @@ worldpop({
 
 Read the [API docs](API.md).
 
-## Developing
+# Developing
 
 Clone the repo, then:
 ```
@@ -42,3 +63,6 @@ styles.  Entry points:
  - css/styles.css - the main styles file.  It gets bundled with the javascript
    and included into the page via app.js
 
+# License
+
+[BSD](LICENSE)
