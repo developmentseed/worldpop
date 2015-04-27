@@ -20,7 +20,8 @@ computation over the otherwise prohibitively large WorldPop dataset.
 development. At present, the web app only supports Chrome, and only a few countries'
 data is available.
 
-[Bug reports, suggestions,](issues) and pull requests are very welcome!
+[Bug reports, suggestions](/developmentseed/worldpop/issues), and pull requests
+are very welcome!
 
 
 ## Related Repositories:
