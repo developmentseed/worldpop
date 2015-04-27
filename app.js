@@ -3,6 +3,7 @@ var qs = require('querystring')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
 var hash = require('hash-change')
+var userAgent = require('ua_parser').userAgent()
 var worldpop = require('./')
 var MapView = require('./app/map-view')
 var Progress = require('./app/progress')
@@ -10,6 +11,13 @@ var accessToken = require('./app/mapbox-access-token')
 
 var styles = require('./css/styles.css')
 styles()
+
+/*
+ * Add "chrome" class so we can warn against non-chrome usage.
+ */
+if (userAgent.browser.chrome) {
+  document.querySelector('html').classList.add('chrome')
+}
 
 var map = new MapView('map', calculateTotal)
 var progress = new Progress(document.querySelector('#progress'))
