@@ -1,6 +1,9 @@
 /* global L */
 var fc = require('turf-featurecollection')
+
 var accessToken = require('./mapbox-access-token')
+var polyColor = '#0571b0'
+
 module.exports = class MapView {
 
   constructor (mapElementId, onPolygonChange) {
@@ -12,7 +15,16 @@ module.exports = class MapView {
     this.featureGroup = L.featureGroup().addTo(this.map)
     new L.Control.Draw({
       draw: {
-        polygon: true,
+        polygon: {
+          allowIntersection: false,
+          drawError: {
+            color: '#e1e100',
+            message: 'Self-interecting polygons are not supported.'
+          },
+          shapeOptions: {
+            color: polyColor
+          }
+        },
         polyline: false,
         rectangle: false,
         circle: false,
@@ -29,7 +41,11 @@ module.exports = class MapView {
    * `totalPopulation`, `totalArea`, and `polygonArea` properties.
    */
   updatePolygon (layer, annotatedPoly) {
-    let newLayer = L.geoJson(annotatedPoly)
+    let newLayer = L.geoJson(annotatedPoly, {
+      style: function (feature) {
+        return { color: polyColor }
+      }
+    })
     this.featureGroup.removeLayer(layer)
     this.featureGroup.addLayer(newLayer)
 

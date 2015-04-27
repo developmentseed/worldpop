@@ -5,11 +5,22 @@
   --base-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --base-font-color: black;
   --primary-color: #cf3f02;
+  --line-height: 1.4
 }
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+* > p { margin-top: 0 }
+* + p { margin-top: calc(var(--line-height), 1em); }
 
 html {
   font-family: var(--base-font-family);
   color: color(var(--base-font-color) tint(20%));
+  line-height: var(--line-height);
 }
 
 body {
@@ -29,6 +40,8 @@ a {
 
 h1 small {
   color: color(var(--base-font-color) tint(80%));
+  text-transform: uppercase;
+  font-size: .75em;
 }
 
 /* Sections */
@@ -59,7 +72,7 @@ body > main {
 
 .about-view {
   flex: 1;
-  padding: 1em;
+  padding: 0 1em;
 }
 
 .map-view {
