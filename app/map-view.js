@@ -7,7 +7,7 @@ module.exports = class MapView {
     this.onPolygonChange = onPolygonChange
     L.mapbox.accessToken = accessToken
     this.map = window.themap = L.mapbox.map('map', 'devseed.3a52f684')
-      .setView([-1.9449, 29.8806], 9)
+      .setView([27.7007, 85.3171], 10)
 
     this.featureGroup = L.featureGroup().addTo(this.map)
     new L.Control.Draw({
