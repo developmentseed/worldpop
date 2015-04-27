@@ -1,0 +1,83 @@
+<html>
+<head>
+  <title>worldpop 0.1.0</title>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+</head>
+<body class='documentation'>
+  <div class='px2'>
+    <div class='clearfix flex flex-stretch mxn2'>
+      <div class='documentation-sidebar relative top-0 bottom-0 right-0 px2 py2 sm-col-3 md-col-2 sm-show'>
+        <div class='font-smaller fixed sm-col-3 md-col-2 top-0 bottom-0 left-0 overflow-auto black bg-cloudy'>
+          <a href="/" class="h5 button block button-transparent">worldpop 0.1.0</a>
+          <div class='px2'>
+              <a
+                href='#worldpop'
+                class='regular block'>
+                <code>worldpop</code>
+              </a>
+          </div>
+        </div>
+      </div>
+      <div class='sm-col sm-col-9 md-col-10 flex flex-column'>
+        <div class='flex-auto full-width'>
+<section id='worldpop'class='mt2 mb2 py1 px3 keyline-top'>
+  <h3 class='regular'>
+    <a class='black' href='#worldpop'>
+      <code>
+        worldpop<span class='gray'>(opts, cb)</span>
+      </code>
+    </a>
+  </h3>
+  <p>Computes the total population within the given polygon.</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>opts</td>
+            <td></td>
+            <td><p>Options:
+max_zoom, min_zoom</p>
+<p>{(string|ReadableStream&lt;Feature&gt;)} source - A GeoJSON Feature
+stream or Tilelive uri for the tiled population data, where each feature
+represents an area of constant population density.</p>
+<p>{function} density - A function that accepts a feature from
+<code>source</code> and returns the population density for that feature.</p>
+<p>{Feature&lt;Polygon&gt;} polygon - The polygon whose interior
+population we want.</p>
+<p>{function} progress - A progress callback, called periodically
+with the current state of {totalPopulation, totalArea, polygonArea}. (You can
+estimate % complete with totalArea/polygonArea.)</p>
+<p>{Number} progressFrequency - Frequency (in # of features) of
+progress callback.</p>
+</td>
+          </tr>
+          <tr>
+            <td>cb</td>
+            <td></td>
+            <td><p>completion callback, called with {totalPopulation, totalArea,
+polygonArea}.</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+
+
+
+</section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
