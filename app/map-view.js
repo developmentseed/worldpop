@@ -6,11 +6,12 @@ var polyColor = '#0571b0'
 
 module.exports = class MapView {
 
-  constructor (mapElementId, onPolygonChange) {
+  constructor (mapElementId, onPolygonChange, updateMapView) {
+    var self = this
     this.onPolygonChange = onPolygonChange
     L.mapbox.accessToken = accessToken
     this.map = window.themap = L.mapbox.map('map', 'devseed.3a52f684')
-      .setView([27.7007, 85.3171], 10)
+      .setView([27.7121, 85.3404], 10)
 
     this.featureGroup = L.featureGroup().addTo(this.map)
     new L.Control.Draw({
@@ -34,6 +35,13 @@ module.exports = class MapView {
 
     this.map.on('draw:created', ({layer}) => onPolygonChange(layer))
     this.map.on('draw:edited', ({layers}) => layers.eachLayer(onPolygonChange))
+
+    function updateView (e) {
+      var {lat, lng} = self.map.getCenter()
+      updateMapView(self.map.getZoom(), lng, lat)
+    }
+    this.map.on('moveend', updateView)
+    this.map.on('zoomend', updateView)
   }
 
   /**
@@ -90,5 +98,10 @@ module.exports = class MapView {
       features.push(layer.toGeoJSON().features)
     })
     return fc(Array.prototype.concat.apply([], features))
+  }
+
+  setView (options) {
+    this.map.setZoom(options.zoom)
+    this.map.panTo([options.latitude, options.longitude])
   }
 }

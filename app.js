@@ -19,7 +19,7 @@ if (userAgent.browser.chrome) {
   document.querySelector('html').classList.add('chrome')
 }
 
-var map = new MapView('map', calculateTotal)
+var map = new MapView('map', calculateTotal, updateMapView)
 var progress = new Progress(document.querySelector('#progress'))
 
 var options = {}
@@ -31,6 +31,13 @@ dragDrop(document.body, function (files) {
     map.setPolygon(file)
   })
 })
+
+function updateMapView (zoom, longitude, latitude) {
+  options.zoom = zoom
+  options.longitude = longitude
+  options.latitude = latitude
+  updateHash()
+}
 
 function calculateTotal (layer) {
   progress.reset()
@@ -65,28 +72,37 @@ function parseOptions () {
     densityProp: 'density',
     multiplier: 10000,
     min_zoom: 11,
-    max_zoom: 11
+    max_zoom: 11,
+    longitude: 85.3171,
+    latitude: 27.7007,
+    zoom: 10
   }
 
   var hash = window.location.hash || '#'
   var params = qs.parse(hash.slice(1).split(',').join('&'))
-  console.log('parseOptions', hash)
-
   options = xtend(defaults, params)
 
-  void ['multiplier', 'min_zoom', 'max_zoom']
-    .forEach((k) => options[k] = Number(options[k]))
+  // numeric options
+  void [
+    'multiplier',
+    'min_zoom',
+    'max_zoom',
+    'longitude',
+    'latitude',
+    'zoom'
+  ].forEach((k) => options[k] = Number(options[k]))
 
+  // polygon is URI encoded
   if (options.polygon) {
     options.polygon = decodeURIComponent(options.polygon)
   }
 
   updateHash()
+  map.setView(options)
   map.setPolygon(options.polygon)
 }
 
 function updateHash (poly) {
-  console.log('updateHash', poly)
   if (poly) {
     options.polygon = encodeURIComponent(JSON.stringify(poly))
   }
