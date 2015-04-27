@@ -50,6 +50,7 @@
     "turf-featurecollection": "^1.0.1",
     "turf-inside": "^1.1.4",
     "turf-intersect": "^1.4.2",
+    "ua_parser": "^1.0.15",
     "vt-geojson": "^1.0.8",
     "xtend": "^4.0.0"
   },
