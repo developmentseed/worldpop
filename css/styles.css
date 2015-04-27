@@ -81,6 +81,7 @@ body > main {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  overflow: scroll;
 }
 
 .about-view {
@@ -92,6 +93,7 @@ body > main {
 .map-view {
   position: relative;
   flex: 2 400px;
+  min-height: 400px;
 }
 
 .map {
