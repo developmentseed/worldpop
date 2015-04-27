@@ -1,6 +1,15 @@
 @import './loader.css';
 
+/* Declare variables here with --variable: value */
 :root {
+  --base-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --base-font-color: black;
+  --primary-color: #cf3f02;
+}
+
+html {
+  font-family: var(--base-font-family);
+  color: color(var(--base-font-color) tint(20%));
 }
 
 body {
@@ -12,17 +21,45 @@ body {
   flex-direction: column;
 }
 
+a,
+a:visited,
+a {
+  color: var(--primary-color);
+}
+
+h1 small {
+  color: color(var(--base-font-color) tint(80%));
+}
+
+/* Sections */
+
+/* main header */
 body > header {
+  height: 6em;
+  line-height: 6em;
 }
+body > header h1 { margin: 0; }
 
+/* main footer */
 body > footer {
+  height: 4em;
+  line-height: 4em;
+}
+.github {
+  float: right;
 }
 
+/* main */
 body > main {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 10em);
   flex: 1;
   display: flex;
   width: 100%;
+}
+
+.about-view {
+  flex: 1;
+  padding: 1em;
 }
 
 .map-view {
@@ -30,10 +67,16 @@ body > main {
   flex: 3;
 }
 
-.about-view {
-  flex: 1;
-  padding: 1em;
+.map {
+  position:absolute;
+  z-index: 100;
+  top:0;
+  bottom:0;
+  width:100%;
 }
+
+
+/** Interactive */
 
 .drag:before {
   background-color: #eeeeff;
@@ -70,17 +113,6 @@ body > main {
 .progress.show { display: flex; }
 .progress .current {
   max-width: 50%
-}
-.progress .bar {
-
-}
-
-.map {
-  position:absolute;
-  z-index: 100;
-  top:0;
-  bottom:0;
-  width:100%;
 }
 
 
