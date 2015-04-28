@@ -78,11 +78,9 @@ module.exports = class MapView {
     })
     if (!geojson) return
     try {
-      let parsed = JSON.parse(geojson)
-      console.log('incoming geojson', parsed)
+      let parsed = typeof geojson === 'string' ? JSON.parse(geojson) : geojson
       L.geoJson(parsed, {
         onEachFeature: (feat, layer) => {
-          console.log('feature', feat)
           this.onPolygonChange(layer)
         }
       })
@@ -94,7 +92,6 @@ module.exports = class MapView {
   drawnPolygonsToGeoJSON () {
     let features = []
     this.featureGroup.eachLayer((layer) => {
-      console.log('layer', layer.toGeoJSON())
       features.push(layer.toGeoJSON().features)
     })
     return fc(Array.prototype.concat.apply([], features))
