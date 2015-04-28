@@ -1,5 +1,7 @@
 /* global L */
 var fc = require('turf-featurecollection')
+var bboxPolygon = require('turf-bbox-polygon')
+var extent = require('turf-extent')
 
 var accessToken = require('./mapbox-access-token')
 var polyColor = '#0571b0'
@@ -90,16 +92,12 @@ module.exports = class MapView {
       self.featureGroup.removeLayer(layer)
     })
     if (!geojson) return
-    try {
-      let parsed = typeof geojson === 'string' ? JSON.parse(geojson) : geojson
-      L.geoJson(parsed, {
-        onEachFeature: (feat, layer) => {
-          this.onPolygonChange(layer)
-        }
-      })
-    } catch(e) {
-      console.error(e)
-    }
+    let parsed = typeof geojson === 'string' ? JSON.parse(geojson) : geojson
+    L.geoJson(parsed, {
+      onEachFeature: (feat, layer) => {
+        this.onPolygonChange(layer)
+      }
+    })
   }
 
   /**
@@ -115,10 +113,19 @@ module.exports = class MapView {
   }
 
   /**
-   * @param options - An object with `zoom`, `latitude`, and `longitude`.
+   * @param options - An object with `zoom`, `latitude`, and `longitude`, OR
+   * `polygon` a GeoJSON object.
    */
   setView (options) {
-    this.map.setZoom(options.zoom)
-    this.map.panTo([options.latitude, options.longitude])
+    if (options.polygon) {
+      var bounds = extent(options.polygon)
+      this.map.fitBounds([
+        [bounds[1], bounds[0]],
+        [bounds[3], bounds[2]]
+      ])
+    } else {
+      this.map.setZoom(options.zoom)
+      this.map.panTo([options.latitude, options.longitude])
+    }
   }
 }

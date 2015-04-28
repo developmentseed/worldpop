@@ -42,7 +42,7 @@ hash.parse()
 
 dragDrop(document.body, function (files) {
   files.forEach(function (file) {
-    map.setPolygon(file)
+    map.setPolygon(JSON.parse(file))
   })
 })
 
@@ -55,7 +55,8 @@ function hashStateChange (newState) {
   if (!state.polygon) {
     results.classList.remove('show')
   }
-  map.setView(state)
+  var {zoom, longitude, latitude} = state
+  map.setView({zoom, longitude, latitude})
   map.setPolygon(state.polygon)
 }
 
@@ -79,9 +80,9 @@ function calculateTotal (layer) {
     testPoly.properties = xtend(testPoly.properties, result)
     map.updatePolygon(layer, testPoly)
 
-    var currentResult = map.drawnPolygonsToGeoJSON()
-    hash.update({ polygon: currentResult })
-    download.setString(JSON.stringify(currentResult), 'application/json')
+    var geojsonResult = map.drawnPolygonsToGeoJSON()
+    hash.update({ polygon: geojsonResult })
+    download.setString(JSON.stringify(geojsonResult), 'application/json')
     results.classList.add('show')
     progress.finish(result)
   })
