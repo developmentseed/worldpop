@@ -6,6 +6,14 @@ var polyColor = '#0571b0'
 
 module.exports = class MapView {
 
+  /**
+   * @param {string} mapElementId - the id of the DOM element meant to contain
+   * the Leaflet map
+   * @param {function} onPolygonChange - called when the user draws or edits
+   * a polygon.
+   * @param {function} updateMapView - called with (zoom, longitude, latitude)
+   * when the user finishes moving or zooming the map.
+   */
   constructor (mapElementId, onPolygonChange, updateMapView) {
     var self = this
     this.onPolygonChange = onPolygonChange
@@ -45,6 +53,7 @@ module.exports = class MapView {
   }
 
   /**
+   * @param layer - the layer to update (will be removed)
    * @param {GeoJSON} annotatedPoly - A GeoJSON polygon feature, annotated with
    * `totalPopulation`, `totalArea`, and `polygonArea` properties.
    */
@@ -93,6 +102,10 @@ module.exports = class MapView {
     }
   }
 
+  /**
+   * @return {FeatureCollection} GeoJSON representation of the user-drawn
+   * polygons.
+   */
   drawnPolygonsToGeoJSON () {
     let features = []
     this.featureGroup.eachLayer((layer) => {
@@ -101,6 +114,9 @@ module.exports = class MapView {
     return fc(Array.prototype.concat.apply([], features))
   }
 
+  /**
+   * @param options - An object with `zoom`, `latitude`, and `longitude`.
+   */
   setView (options) {
     this.map.setZoom(options.zoom)
     this.map.panTo([options.latitude, options.longitude])
