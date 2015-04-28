@@ -61,10 +61,14 @@ module.exports = class MapView {
     // attach popup with population data
     var ppl = Math.round(props.totalPopulation)
     var area = Math.round(props.polygonArea / 1e4) / 1e2
+    var density = Math.round(ppl / area * 1e2) / 1e2
     newLayer.bindPopup(`
-      Population: ${ppl} persons<br>
-      Area: ${area} km^2<br>
-      Density: ${ppl / area} persons / km^2`)
+      <dl>
+        <dt>Population</dt><dd>${ppl} persons</dd>
+        <dt>Area</dt><dd>${area} km<sup>2</sup></dd>
+        <dt>Density</dt><dd>${density} persons / km<sup>2</sup></dd>
+      </dl>
+    `, { className: 'result-popup' })
     newLayer.openPopup()
   }
 
