@@ -78,8 +78,7 @@ module.exports = class MapView {
     })
     if (!geojson) return
     try {
-      let parsed = JSON.parse(geojson)
-      console.log('incoming geojson', parsed)
+      let parsed = typeof geojson === 'string' ? JSON.parse(geojson) : geojson
       L.geoJson(parsed, {
         onEachFeature: (feat, layer) => {
           console.log('feature', feat)

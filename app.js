@@ -4,6 +4,9 @@ var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
 var hash = require('hash-change')
 var userAgent = require('ua_parser').userAgent()
+var d64 = require('d64')
+var fc = require('turf-featurecollection')
+var polygon = require('turf-polygon')
 var worldpop = require('./')
 var MapView = require('./app/map-view')
 var Progress = require('./app/progress')
@@ -87,6 +90,7 @@ function parseOptions () {
   var params = qs.parse(hash.slice(1).split(',').join('&'))
   options = xtend(defaults, params)
 
+  console.log(hash, params, options)
   // numeric options
   void [
     'multiplier',
@@ -97,9 +101,8 @@ function parseOptions () {
     'zoom'
   ].forEach((k) => options[k] = Number(options[k]))
 
-  // polygon is URI encoded
   if (options.polygon) {
-    options.polygon = decodeURIComponent(options.polygon)
+    options.polygon = decodeGeoJson(options.polygon)
   } else {
     results.classList.remove('show')
   }
@@ -111,7 +114,7 @@ function parseOptions () {
 
 function updateHash (poly) {
   if (poly) {
-    options.polygon = encodeURIComponent(JSON.stringify(poly))
+    options.polygon = encodeGeoJson(poly)
   }
 
   hash.removeAllListeners()
@@ -121,4 +124,23 @@ function updateHash (poly) {
   window.location.hash = Object.keys(options)
     .map((k) => [k, options[k]].map(encodeURIComponent).join('='))
     .join(',')
+}
+
+/*
+ * FeatureCollection of Polygons --> [ [ [ [x,y], ... ] ], ... ]
+ */
+function encodeGeoJson (geojson) {
+  if (geojson.type === 'FeatureCollection') {
+    geojson = geojson.features.map((f) => f.geometry.coordinates)
+  } else {
+    geojson = [geojson.geometry.coordinates]
+  }
+
+  return d64.encode(new Buffer(JSON.stringify(geojson), 'utf-8'))
+}
+
+function decodeGeoJson (str) {
+  var coordinates = JSON.parse(d64.decode(str).toString('utf-8'))
+  console.log(coordinates)
+  return fc(coordinates .map((poly) => polygon(poly)))
 }
