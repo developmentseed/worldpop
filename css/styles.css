@@ -90,6 +90,13 @@ body > main {
   overflow: scroll;
 }
 
+.about-view .shape-button {
+  display: inline-block;
+  height: 1.4em;
+  position: relative;
+  bottom: -3px;
+}
+
 .map-view {
   position: relative;
   flex: 2 400px;
@@ -104,6 +111,28 @@ body > main {
   width:100%;
 }
 
+.map a,
+.map a:hover { color: color(var(--base-font-color) tint(20%)); }
+
+/* leaflet.draw */
+.leaflet-draw-actions a,
+.leaflet-draw-actions a:hover {
+  color: #fff;
+}
+
+a.leaflet-draw-draw-polygon {
+  width: auto;
+}
+a.leaflet-draw-draw-polygon:after {
+  font-weight: bold;
+  content: "Draw a Shape";
+  background: #fff;
+  padding: 0 .25em;
+  margin: 1px 0 1px 26px;
+  height: 24px;
+  line-height: 26px;
+  display: inline-block;
+}
 
 /** Components */
 
