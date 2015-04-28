@@ -112,6 +112,9 @@ body > main {
   font-weight: bold;
 }
 
+.results { display: none; }
+.results.show { display: block; }
+
 .drag:before {
   background-color: #eeeeff;
   background-color: rgba(255, 255, 255, .5);

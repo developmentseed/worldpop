@@ -7,8 +7,8 @@ var userAgent = require('ua_parser').userAgent()
 var worldpop = require('./')
 var MapView = require('./app/map-view')
 var Progress = require('./app/progress')
+var DownloadLink = require('./app/download-link')
 var accessToken = require('./app/mapbox-access-token')
-
 var styles = require('./css/styles.css')
 styles()
 
@@ -21,6 +21,8 @@ if (userAgent.browser.chrome) {
 
 var map = new MapView('map', calculateTotal, updateMapView)
 var progress = new Progress(document.querySelector('#progress'))
+var download = new DownloadLink(document.querySelector('a.download'))
+var results = document.querySelector('.results')
 
 var options = {}
 parseOptions()
@@ -57,7 +59,10 @@ function calculateTotal (layer) {
     if (err) console.error(err)
     testPoly.properties = xtend(testPoly.properties, result)
     map.updatePolygon(layer, testPoly)
-    updateHash(map.drawnPolygonsToGeoJSON())
+    var currentResult = map.drawnPolygonsToGeoJSON()
+    download.setString(JSON.stringify(currentResult), 'application/json')
+    updateHash(currentResult)
+    results.classList.add('show')
     progress.finish(result)
   })
 }
@@ -95,6 +100,8 @@ function parseOptions () {
   // polygon is URI encoded
   if (options.polygon) {
     options.polygon = decodeURIComponent(options.polygon)
+  } else {
+    results.classList.remove('show')
   }
 
   updateHash()
