@@ -67,27 +67,47 @@ body > header h1 { margin: 0; }
 
 /* main footer */
 body > footer {
-  height: 4em;
-  line-height: 4em;
+  background-color: #fff;
+  z-index: 1000;
 }
-.github {
-  float: right;
+
+@media (min-width: 43rem) {
+  body > footer {
+    height: 4em;
+    line-height: 4em;
+  }
+}
+
+@media (min-width: 43rem) {
+  .github {
+    float: right;
+  }
 }
 
 /* main */
 body > main {
-  height: calc(100vh - 10em);
   flex: 1;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  overflow: scroll;
+}
+
+@media (min-width: 43rem) {
+  body > main {
+    height: calc(100vh - 10em);
+  }
 }
 
 .about-view {
   flex: 1 15em;
   padding: 0 1em;
-  overflow: scroll;
+  overflow: auto;
+}
+
+@media (max-width: 43rem) {
+  .about-view {
+    padding: 0;
+  }
 }
 
 .about-view .shape-button {
@@ -100,7 +120,13 @@ body > main {
 .map-view {
   position: relative;
   flex: 2 400px;
-  min-height: 400px;
+}
+
+@media (max-width: 43rem) {
+  .map-view {
+    margin-bottom: 2em;
+    min-height: 400px;
+  }
 }
 
 .map {
@@ -146,7 +172,6 @@ a.leaflet-draw-draw-polygon:after {
 
 .result-popup {
   width: 25em;
-  overflow: scroll;
   opacity: .85 !important;
 }
 .result-popup dl {
@@ -207,7 +232,7 @@ a.leaflet-draw-draw-polygon:after {
    Media Queries
    ========================================================================== */
 
-@media only screen and (min-width: 35em) {
+@media only screen and (min-width: 35rem) {
 
 }
 
