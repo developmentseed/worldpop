@@ -37,7 +37,7 @@ var worldpop = require('worldpop')
 worldpop({
   source: 'tilejson+http://...',
   polygon: { /* geojson */ },
-  density: funciton (feat) { /* returns density */ },
+  density: function (feat) { /* returns density */ },
 }, function done (err, result) {
   console.log(result)
 })
