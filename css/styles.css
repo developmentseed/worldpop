@@ -160,6 +160,21 @@ a.leaflet-draw-draw-polygon:after {
   display: inline-block;
 }
 
+
+.draw-disabled .leaflet-draw-draw-polygon {
+  opacity: .25;
+  pointer-events: none;
+}
+
+
+.draw-disabled .leaflet-draw-toolbar:after {
+  color: var(--warning-color);
+  content: "Zoom in further to draw an area of interest.";
+  transition: .33s;
+  position: absolute;
+  top: 100%;
+}
+
 /** Components */
 
 .warning {

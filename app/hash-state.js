@@ -47,6 +47,9 @@ module.exports = class HashState {
       state.polygon = encodeGeoJson(state.polygon)
     }
 
+    // stop listening for changes to the hash so that we can actually update
+    // it without causing an infinite loop. then resume listening once we've
+    // made this change.
     hash.removeAllListeners()
     hash.once('change', function () {
       hash.on('change', () => self.parse())

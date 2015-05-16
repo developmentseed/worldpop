@@ -1,6 +1,5 @@
 /* global L */
 var fc = require('turf-featurecollection')
-var bboxPolygon = require('turf-bbox-polygon')
 var extent = require('turf-extent')
 
 var accessToken = require('./mapbox-access-token')

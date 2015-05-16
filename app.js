@@ -26,9 +26,9 @@ var defaults = {
   multiplier: 10000,
   min_zoom: 11,
   max_zoom: 11,
-  longitude: 85.3171,
-  latitude: 27.7007,
-  zoom: 10
+  longitude: 1.0,
+  latitude: -14.7748,
+  zoom: 2
 }
 
 var results = document.querySelector('.results')
@@ -49,6 +49,14 @@ dragDrop(document.body, function (files) {
 
 function onMapMove (zoom, longitude, latitude) {
   hash.update({ zoom, longitude, latitude })
+
+  var mv = document.querySelector('.map-view')
+
+  if (zoom >= 6) {
+    mv.classList.remove('draw-disabled')
+  } else {
+    mv.classList.add('draw-disabled')
+  }
 }
 
 function hashStateChange (newState) {
@@ -57,6 +65,7 @@ function hashStateChange (newState) {
     results.classList.remove('show')
   }
   var {zoom, longitude, latitude} = state
+  console.log(zoom, longitude, latitude)
   map.setView({zoom, longitude, latitude})
   map.setPolygon(state.polygon)
 }
