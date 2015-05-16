@@ -20,7 +20,6 @@ module.exports = class MapView {
     this.onPolygonChange = onPolygonChange
     L.mapbox.accessToken = accessToken
     this.map = window.themap = L.mapbox.map('map', 'devseed.3a52f684')
-      .setView([27.7121, 85.3404], 10)
 
     this.featureGroup = L.featureGroup().addTo(this.map)
     new L.Control.Draw({
@@ -124,6 +123,7 @@ module.exports = class MapView {
       ])
     } else {
       this.map.setZoom(options.zoom)
+      console.log(options)
       this.map.panTo([options.latitude, options.longitude])
     }
   }
