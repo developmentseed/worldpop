@@ -23,6 +23,9 @@ module.exports = worldpop
  * stream or Tilelive uri for the tiled population data, where each feature
  * represents an area of constant population density.
  *
+ * {string} layer - If `source` is a tile source, the layer in which to find
+ * the population features.
+ *
  * {function} density - A function that accepts a feature from
  * `source` and returns the population density for that feature.
  *
@@ -46,7 +49,7 @@ function worldpop (opts, cb) {
 
   var poly = opts.polygon
   var source = typeof opts.source.pipe === 'function' ? opts.source :
-    tiledData(opts.source, poly, opts)
+    tiledData(opts.source, opts.layer, poly, opts)
   var progressFrequency = opts.progressFrequency || DEFAULT_PROGRESS_FREQ
 
   var result = {

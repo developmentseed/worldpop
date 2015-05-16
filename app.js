@@ -20,7 +20,8 @@ if (userAgent.browser.chrome) {
 }
 
 var defaults = {
-  source: 'devseed.oexqd7vi',
+  source: 'devseed.isnka9k9',
+  layer: 'population',
   densityProp: 'density',
   multiplier: 10000,
   min_zoom: 11,
@@ -68,6 +69,7 @@ function calculateTotal (layer) {
 
   worldpop({
     source: tilesUri,
+    layer: state.layer,
     density: density,
     polygon: testPoly,
     min_zoom: 11,
