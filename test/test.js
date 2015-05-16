@@ -15,6 +15,7 @@ test('basic', function (t) {
   getTotal({
     source: 'mbtiles://' + path.join(fixtures, 'rwa-uga.mbtiles'),
     density: density,
+    layer: 'population',
     polygon: JSON.parse(testPoly),
     min_zoom: 11,
     max_zoom: 11,
