@@ -11,38 +11,40 @@ var debugTotal = require('debug')('polypop:totalTime')
 
 var DEFAULT_PROGRESS_FREQ = 100
 
-module.exports = worldpop
-
 /**
  * Computes the total population within the given polygon.
  *
- * @param opts - Options:
- * max_zoom, min_zoom
- *
- * {(string|ReadableStream<Feature>)} source - A GeoJSON Feature
- * stream or Tilelive uri for the tiled population data, where each feature
- * represents an area of constant population density.
- *
- * {string} layer - If `source` is a tile source, the layer in which to find
- * the population features.
- *
- * {function} density - A function that accepts a feature from
- * `source` and returns the population density for that feature.
- *
- * {Feature<Polygon>} polygon - The polygon whose interior
- * population we want.
- *
- * {function} progress - A progress callback, called periodically
- * with the current state of {totalPopulation, totalArea, polygonArea}. (You can
- * estimate % complete with totalArea/polygonArea.)
- *
- * {Number} progressFrequency - Frequency (in # of features) of
- * progress callback.
+ * @name worldpop
+ * @param {WorldpopOpts} opts - Options.
  * @param cb - completion callback, called with {totalPopulation, totalArea,
  * polygonArea}.
- * @return - a GeoJSON feature stream of constant-population polygons, clipped
- * to the poly of interest
+ * @returns {ReadableStream<Feature>} - a GeoJSON feature stream of
+ * constant-population polygons, clipped to the poly of interest
  */
+module.exports = worldpop
+
+/**
+ * Options object for the `worldpop` function.
+ * @name WorldpopOpts
+ * @typedef {Object} WorldpopOpts
+ * @property {number} minzoom
+ * @property {number} maxzoom
+ * @property {(string|ReadableStream<Feature>)} source - A GeoJSON Feature
+ * stream or Tilelive uri for the tiled population data, where each feature
+ * represents an area of constant population density.
+ * @property {string} layer - If `source` is a tile source, the layer in which
+ * to find the population features.
+ * @property {function} density - A function that accepts a feature from
+ * `source` and returns the population density for that feature.
+ * @property {Feature<Polygon>} polygon - The polygon whose interior population
+ * we want.
+ * @property {function} progress - A progress callback, called periodically
+ * with the current state of {totalPopulation, totalArea, polygonArea}. (You
+ * can estimate % complete with totalArea/polygonArea.)
+ * @property {Number} progressFrequency - Frequency (in # of features) of
+ * progress callback.
+ */
+
 function worldpop (opts, cb) {
   opts.min_zoom = opts.min_zoom || 8
   opts.max_zoom = opts.max_zoom || 12
@@ -90,3 +92,4 @@ function popped (densityFn, poly, feat) {
   debug(feat.properties)
   return feat
 }
+

@@ -13,6 +13,11 @@
           <a href="/" class="h5 button block button-transparent">worldpop 0.1.0</a>
           <div class='px2'>
               <a
+                href='#worldpopopts'
+                class='regular block'>
+                <code>WorldpopOpts</code>
+              </a>
+              <a
                 href='#worldpop'
                 class='regular block'>
                 <code>worldpop</code>
@@ -22,6 +27,87 @@
       </div>
       <div class='sm-col sm-col-9 md-col-10 flex flex-column'>
         <div class='flex-auto full-width'>
+<section id='worldpopopts'class='mt2 mb2 py1 px3 keyline-top'>
+  <h3 class='regular'>
+    <a class='black' href='#worldpopopts'>
+      <code>
+        WorldpopOpts<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Options object for the <code>worldpop</code> function.</p>
+
+
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>property</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>minzoom</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number">number</a></code></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>maxzoom</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number">number</a></code></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>source</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string">string</a></code> or ReadableStream<<code>Feature</code>></td>
+            <td><p>A GeoJSON Feature
+stream or Tilelive uri for the tiled population data, where each feature
+represents an area of constant population density.</p>
+</td>
+          </tr>
+          <tr>
+            <td>layer</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string">string</a></code></td>
+            <td><p>If <code>source</code> is a tile source, the layer in which
+to find the population features.</p>
+</td>
+          </tr>
+          <tr>
+            <td>density</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function">function</a></code></td>
+            <td><p>A function that accepts a feature from
+<code>source</code> and returns the population density for that feature.</p>
+</td>
+          </tr>
+          <tr>
+            <td>polygon</td>
+            <td>Feature<<code>Polygon</code>></td>
+            <td><p>The polygon whose interior population
+we want.</p>
+</td>
+          </tr>
+          <tr>
+            <td>progress</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function">function</a></code></td>
+            <td><p>A progress callback, called periodically
+with the current state of {totalPopulation, totalArea, polygonArea}. (You
+can estimate % complete with totalArea/polygonArea.)</p>
+</td>
+          </tr>
+          <tr>
+            <td>progressFrequency</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code></td>
+            <td><p>Frequency (in # of features) of
+progress callback.</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+
+
+</section>
 <section id='worldpop'class='mt2 mb2 py1 px3 keyline-top'>
   <h3 class='regular'>
     <a class='black' href='#worldpop'>
@@ -42,21 +128,8 @@
         </thead>
           <tr>
             <td>opts</td>
-            <td></td>
-            <td><p>Options:
-max_zoom, min_zoom</p>
-<p>{(string|ReadableStream&lt;Feature&gt;)} source - A GeoJSON Feature
-stream or Tilelive uri for the tiled population data, where each feature
-represents an area of constant population density.</p>
-<p>{function} density - A function that accepts a feature from
-<code>source</code> and returns the population density for that feature.</p>
-<p>{Feature&lt;Polygon&gt;} polygon - The polygon whose interior
-population we want.</p>
-<p>{function} progress - A progress callback, called periodically
-with the current state of {totalPopulation, totalArea, polygonArea}. (You can
-estimate % complete with totalArea/polygonArea.)</p>
-<p>{Number} progressFrequency - Frequency (in # of features) of
-progress callback.</p>
+            <td><code><a href="#worldpopopts">WorldpopOpts</a></code></td>
+            <td><p>Options.</p>
 </td>
           </tr>
           <tr>
@@ -68,6 +141,15 @@ polygonArea}.</p>
           </tr>
       </table>
     </p>
+
+      <h4>Returns</h4>
+      <code>ReadableStream<<code>Feature</code>></code>
+      :
+      <span class='force-inline'>
+        <p>a GeoJSON feature stream of
+constant-population polygons, clipped to the poly of interest</p>
+
+      </span>
 
 
 
