@@ -6,7 +6,8 @@
   --base-font-color: black;
   --primary-color: #cf3f02;
   --warning-color: #CF7902;
-  --line-height: 1.4
+  --line-height: 1.4;
+  --global-radius: 2px;
 }
 
 *, *:before, *:after {
@@ -15,34 +16,26 @@
   box-sizing: border-box;
 }
 
-* > p { margin-top: 0 }
-* + p { margin-top: calc(var(--line-height), 1em); }
-
-html {
+body {
+  background-color: #fff;
   font-family: var(--base-font-family);
   color: color(var(--base-font-color) tint(20%));
   line-height: var(--line-height);
 }
 
-body {
-  background-color: #fff;
-  margin: 0;
-  padding: 0 1em;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+p {
+  margin-top: 0;
+  margin-bottom: 16px;
 }
 
 a,
 a:visited,
-a {
-  color: var(--primary-color);
+a:hover {
+  color: inherit;
 }
 
-h1 small {
-  color: color(var(--base-font-color) tint(80%));
-  text-transform: uppercase;
-  font-size: .75em;
+a:hover {
+  opacity: 0.64;
 }
 
 /* Only support Chrome */
@@ -51,90 +44,81 @@ h1 small {
   bottom: 0;
   line-height: var(--line-height);
 }
+
 .chrome #chrome-warning {
   display: none;
 }
 
 /* Sections */
 
-/* main header */
-body > header {
-  height: 6em;
-  line-height: 6em;
+/* site header */
+#site-header {
   position: relative;
-}
-body > header h1 { margin: 0; }
-
-/* main footer */
-body > footer {
-  background-color: #fff;
-  z-index: 1000;
+  z-index: 100;
+  padding: 16px;
+  background: color(var(--base-font-color) tint(20%));
+  color: #fff;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-@media (min-width: 43rem) {
-  body > footer {
-    height: 4em;
-    line-height: 4em;
-  }
+#site-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
-@media (min-width: 43rem) {
-  .github {
-    float: right;
-  }
+#site-title sup {
+  color: color(var(--base-font-color) tint(64%));
+  font-size: 0.75em;
+  top: -0.25em;
 }
 
-/* main */
-body > main {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
+/* site footer */
+#site-footer {
+  color: color(var(--base-font-color) tint(48%));
+}
+
+/* site body */
+#site-body {
   width: 100%;
 }
 
-@media (min-width: 43rem) {
-  body > main {
-    height: calc(100vh - 10em);
-  }
+#helper {
+  position: absolute;
+  z-index: 200;
+  top: 16px;
+  right: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: var(--global-radius);
+  width: 256px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
-.about-view {
-  flex: 1 15em;
-  padding: 0 1em;
-  overflow: auto;
+#helper > p:last-of-type {
+  margin-bottom: 0;
 }
 
-@media (max-width: 43rem) {
-  .about-view {
-    padding: 0;
-  }
+.results {
+  margin-top: 16px;
 }
 
-.about-view .shape-button {
-  display: inline-block;
-  height: 1.4em;
+#map-view {
   position: relative;
-  bottom: -3px;
-}
-
-.map-view {
-  position: relative;
-  flex: 2 400px;
-}
-
-@media (max-width: 43rem) {
-  .map-view {
-    margin-bottom: 2em;
-    min-height: 400px;
-  }
+  z-index: 90;
+  height: 384px;
 }
 
 .map {
-  position:absolute;
+  position: absolute;
   z-index: 100;
-  top:0;
-  bottom:0;
-  width:100%;
+  top: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .map a,
@@ -160,7 +144,6 @@ a.leaflet-draw-draw-polygon:after {
   display: inline-block;
 }
 
-
 .draw-disabled .leaflet-draw-draw-polygon {
   opacity: .25;
   pointer-events: none;
@@ -173,6 +156,32 @@ a.leaflet-draw-draw-polygon:after {
   transition: .33s;
   position: absolute;
   top: 100%;
+}
+
+/* about */
+#about-view {
+  padding: 32px 16px;
+  columns: 3;
+}
+
+#about-view h2 {
+  margin-top: 0;
+  column-span: all
+}
+
+#about-view p {
+  margin-top: 0;
+}
+
+/* site footer */
+#site-footer {
+  position: relative;
+  z-index: 100;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 /** Components */
@@ -247,8 +256,13 @@ a.leaflet-draw-draw-polygon:after {
    Media Queries
    ========================================================================== */
 
-@media only screen and (min-width: 35rem) {
-
+@media (min-width: 768px) {
+  #map-view {
+    height: 512px;
+  }
+  .github {
+    float: right;
+  }
 }
 
 @media print,
