@@ -72,6 +72,7 @@ a:hover {
 /* site body */
 #site-body {
   width: 100%;
+  min-height: 90vh;
 }
 
 /* Okay, this settles it: the CSS4-only approach is still too limited
