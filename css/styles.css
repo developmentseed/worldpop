@@ -74,22 +74,30 @@ a:hover {
   width: 100%;
 }
 
+/* Okay, this settles it: the CSS4-only approach is still too limited
+ * for my satisfaction: mixins, or even just extends, would be good enough.
+ */
+@custom-selector --message-box #helper, .draw-disabled .leaflet-draw-toolbar:after;
+
+--message-box {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: var(--global-radius);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+--message-box > p:last-of-type {
+  margin-bottom: 0;
+}
+
 #helper {
   position: absolute;
   z-index: 200;
   top: 16px;
   right: 16px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  border-radius: var(--global-radius);
   width: 256px;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-#helper > p:last-of-type {
-  margin-bottom: 0;
 }
 
 .results {
@@ -138,13 +146,19 @@ a.leaflet-draw-draw-polygon:after {
   pointer-events: none;
 }
 
-
+/*
+ * Message to zoom in further.  `draw-disabled` class is added/removed
+ * as user zooms map.
+ */
 .draw-disabled .leaflet-draw-toolbar:after {
   color: var(--warning-color);
   content: "Zoom in further to draw an area of interest.";
   transition: .33s;
   position: absolute;
   top: 100%;
+  font-size: 12px;
+  padding: 12px;
+  margin-top: 12px;
 }
 
 /* about */
