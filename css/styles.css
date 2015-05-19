@@ -38,17 +38,6 @@ a:hover {
   opacity: 0.64;
 }
 
-/* Only support Chrome */
-#chrome-warning {
-  position: absolute;
-  bottom: 0;
-  line-height: var(--line-height);
-}
-
-.chrome #chrome-warning {
-  display: none;
-}
-
 /* Sections */
 
 /* site header */
