@@ -1,7 +1,6 @@
 window.myDebug = require('debug')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
-var userAgent = require('ua_parser').userAgent()
 
 var worldpop = require('./')
 var HashState = require('./app/hash-state')
@@ -11,13 +10,6 @@ var DownloadLink = require('./app/download-link')
 var accessToken = require('./app/mapbox-access-token')
 var styles = require('./css/styles.css')
 styles()
-
-/*
- * Add "chrome" class so we can warn against non-chrome usage.
- */
-if (userAgent.browser.chrome) {
-  document.querySelector('html').classList.add('chrome')
-}
 
 var defaults = {
   source: 'devseed.isnka9k9',

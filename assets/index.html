@@ -1,90 +1,77 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <title>WorldPop Data Explorer</title>
+    <meta name="description" content="The WorldPop project aims to provide an open access archive of spatial demographic datasets for Central and South America, Africa and Asia to support development and health applications.">
 
-        <script src='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
-        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
 
-        <link rel="shortcut icon" href="https://developmentseed.org/assets/graphics/meta/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" type="text/css">
-        <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
-        <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
-        <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="shortcut icon" href="https://developmentseed.org/assets/graphics/meta/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" type="text/css">
+    <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+    <link rel="stylesheet" href="css/normalize.min.css">
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
 
-        <!--[if lt IE 9]>
-            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-            <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
-        <![endif]-->
-    </head>
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <div id="site-canvas">
 
-        <header>
-          <h1>WorldPop Data Explorer <small>beta</small></h1>
-          <aside id="chrome-warning" class="warning">
-          Note: this beta version of the WorldPop Data Explorer requires <a
-            href="http://www.google.com/chrome/">Google Chrome browser</a> to
-          work properly.</aside>
-        </header>
-        <main>
-          <section id="map-view" class="map-view">
-            <div id="map" class="map"></div>
-            <div id="progress" class="progress">
-            </div>
-          </section>
-          <section id="about-view" class="about-view">
+      <header id="site-header">
+        <h1 id="site-title">WorldPop Data Explorer <sup>beta</sup></h1>
+      </header>
 
-            <p> Click <img class="shape-button" src="image/shape-button.png"
-            alt="the 'Draw a Shape' button"> to draw a shape on the map and get
-            the estimated population within your shape.  </p>
-            <p>Alternatively, drag and drop a GeoJSON file containing one or
-            more polygons onto the map.</p>
-
+      <main id="site-body">
+        <section id="map-view" class="map-view">
+          <div id="map" class="map"></div>
+          <div id="progress" class="progress"></div>
+          <div id="helper">
+            <p>Draw a shape on the map and get the estimated population within that area.</p>
+            <p>Alternatively, drag and drop a GeoJSON file containing one or more polygons onto the map.</p>
             <div class="results">
               <p><a id="clear" class="clear" href="#">Clear Shapes</a></p>
               <p><a id="download" class="download">Download Result as GeoJSON</a></p>
             </div>
-
-            <h2>About the Data</h2>
-            <p class="">The <a href="http://www.worldpop.org.uk/">WorldPop
-              project</a> was initiated in October 2013 to combine the AfriPop,
-            AsiaPop and AmeriPop population mapping projects.  It aims to
-            provide an open access archive of spatial demographic datasets for
-            Central and South America, Africa and Asia to support development
-            and health applications. The methods used are designed with full
-            open access and operational application in mind, using transparent,
-            fully documented and shareable methods to produce easily updatable
-            maps with accompanying metadata.  </p>
-          </section>
-        </main>
-        <footer>
-          Made with &hearts; by <a class=""
-            href="https://developmentseed.org">Development Seed</a> and <a
-            href="http://www.worldpop.org.uk">WorldPop</a>. 
-          <div class="github">
-            Feedback? Yes please:
-            <a
-              href="https://github.com/developmentseed/worldpop/issues">submit an
-              issue on Github</a>.
           </div>
-        </footer>
-        <script src="js/main.js"></script>
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        </section>
+        <section id="about-view">
+          <h2>About the Data</h2>
+          <p>The <a href="http://www.worldpop.org.uk/">WorldPop project</a> was initiated in October 2013 to combine the AfriPop, AsiaPop and AmeriPop population mapping projects.</p>
+          <p>It aims to provide an open access archive of spatial demographic datasets for Central and South America, Africa and Asia to support development and health applications.</p>
+          <p>The methods used are designed with full open access and operational application in mind, using transparent, fully documented and shareable methods to produce easily updatable maps with accompanying metadata.</p>
+        </section>
+      </main>
 
-          ga('create', 'UA-88478-50', 'auto');
-          ga('send', 'pageview');
+      <footer id="site-footer">
+        Made with &hearts; by <a class=""
+          href="https://developmentseed.org">Development Seed</a> and <a
+          href="http://www.worldpop.org.uk">WorldPop</a>. 
+        <div class="github">
+          Feedback? Yes please:
+          <a
+            href="https://github.com/developmentseed/worldpop/issues">submit an
+            issue on Github</a>.
+        </div>
+      </footer>
 
-        </script>
-    </body>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-88478-50', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </body>
 </html>
