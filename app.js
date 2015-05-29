@@ -18,9 +18,9 @@ var defaults = {
   multiplier: 10000,
   min_zoom: 11,
   max_zoom: 11,
-  longitude: 1.0,
-  latitude: -14.7748,
-  zoom: 2
+  longitude: 5.625,
+  latitude: 6.6646,
+  zoom: 3
 }
 
 var results = document.querySelector('.results')
