@@ -39,6 +39,7 @@
     "geojsonhint": "^1.0.0",
     "hash-change": "^0.1.0",
     "nanobar": "^0.2.1",
+    "numeral": "^1.5.3",
     "through2": "^0.6.5",
     "tile-cover": "^2.4.1",
     "tilejson": "git://github.com/anandthakker/node-tilejson.git",
