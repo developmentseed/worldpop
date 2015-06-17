@@ -1,6 +1,6 @@
 {
   "name": "worldpop",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Compute the population within a polygon from GeoJSON population data",
   "main": "index.js",
   "scripts": {
