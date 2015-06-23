@@ -16,13 +16,11 @@ window.worldpop = {
   debug: require('debug')
 }
 
+var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
+  'devseed.isnka9k9.json?access_token=' + accessToken
+var tileLayer = 'population'
+
 var defaults = {
-  source: 'devseed.isnka9k9',
-  layer: 'population',
-  densityProp: 'density',
-  multiplier: 10000,
-  min_zoom: 11,
-  max_zoom: 11,
   longitude: 5.625,
   latitude: 6.6646,
   zoom: 3
@@ -73,12 +71,10 @@ function calculateTotal (layer) {
   progress.reset()
   drawnLayer = layer
   testPoly = layer.toGeoJSON()
-  var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
-    `${state.source}.json?access_token=${accessToken}`
 
   worldpop.postMessage({
     source: tilesUri,
-    layer: state.layer,
+    layer: tileLayer,
     polygon: testPoly,
     min_zoom: 11,
     max_zoom: 11,
