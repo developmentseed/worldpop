@@ -27,19 +27,19 @@ test('basic', function (t) {
     progressFrequency: 1000
   }, function (err, result) {
     t.ok(result)
-    roundEqual(t, result.totalPopulation / 10, 9572, 'correct population count')
-    roundEqual(t, result.totalArea / 10, 9668048, 'correct total area')
-    roundEqual(t, result.polygonArea / 10, 9784701, 'correct polygon area')
+    roundEqual(t, result.totalPopulation, 95720, 1000, 'correct population count')
+    roundEqual(t, result.totalArea, 97000000, 1000000, 'correct total area')
+    roundEqual(t, result.polygonArea, 98000000, 1000000, 'correct polygon area')
     t.equal(updates, parseInt(result.count / 1000, 10), 'progress updates')
     console.log('result', result)
     t.end(err)
   })
 })
 
-function roundEqual (t, num1, num2, message) {
+function roundEqual (t, num1, num2, precision, message) {
   return t.equal(
-    Math.round(num1),
-    Math.round(num2),
+    Math.round(num1 / precision) * precision,
+    Math.round(num2 / precision) * precision,
     message
   )
 }
