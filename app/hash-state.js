@@ -18,9 +18,6 @@ module.exports = class HashState {
 
     // cast numeric options
     void [
-      'multiplier',
-      'min_zoom',
-      'max_zoom',
       'longitude',
       'latitude',
       'zoom'

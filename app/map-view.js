@@ -1,6 +1,7 @@
 /* global L */
 var fc = require('turf-featurecollection')
 var extent = require('turf-extent')
+var numeral = require('numeral')
 
 var accessToken = require('./mapbox-access-token')
 var polyColor = '#0571b0'
@@ -68,9 +69,10 @@ module.exports = class MapView {
 
     let props = annotatedPoly.properties
     // attach popup with population data
-    var ppl = Math.round(props.totalPopulation)
-    var area = Math.round(props.polygonArea / 1e4) / 1e2
-    var density = Math.round(ppl / area * 1e2) / 1e2
+    var ppl = numeral(props.totalPopulation).format('0,0')
+    var area = numeral(props.polygonArea / 1e6).format('0,0.00')
+    var density = numeral(props.totalPopulation / props.polygonArea * 1e6)
+      .format('0,0.0')
     newLayer.bindPopup(`
       <dl>
         <dt>Population</dt><dd>${ppl} persons</dd>

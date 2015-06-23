@@ -1,8 +1,8 @@
-window.myDebug = require('debug')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
+var work = require('webworkify')
 
-var worldpop = require('./')
+var worldpop = work(require('./app/worker.js'))
 var HashState = require('./app/hash-state')
 var MapView = require('./app/map-view')
 var Progress = require('./app/progress')
@@ -11,13 +11,16 @@ var accessToken = require('./app/mapbox-access-token')
 var styles = require('./css/styles.css')
 styles()
 
+window.worldpop = {
+  worldpop: worldpop,
+  debug: require('debug')
+}
+
+var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
+  'devseed.isnka9k9.json?access_token=' + accessToken
+var tileLayer = 'population'
+
 var defaults = {
-  source: 'devseed.isnka9k9',
-  layer: 'population',
-  densityProp: 'density',
-  multiplier: 10000,
-  min_zoom: 11,
-  max_zoom: 11,
   longitude: 5.625,
   latitude: 6.6646,
   zoom: 3
@@ -28,6 +31,9 @@ var hash = new HashState(defaults, hashStateChange)
 var map = new MapView('map', calculateTotal, onMapMove)
 var progress = new Progress(document.querySelector('#progress'))
 var download = new DownloadLink(document.querySelector('a.download'))
+
+var drawnLayer = null
+var testPoly = null
 
 // current hash options, updated in hashStateChange
 var state = {}
@@ -63,33 +69,37 @@ function hashStateChange (newState) {
 
 function calculateTotal (layer) {
   progress.reset()
-  var tilesUri = 'tilejson+http://api.tiles.mapbox.com/v4/' +
-    `${state.source}.json?access_token=${accessToken}`
-  var testPoly = layer.toGeoJSON()
+  drawnLayer = layer
+  testPoly = layer.toGeoJSON()
 
-  worldpop({
+  worldpop.postMessage({
     source: tilesUri,
-    layer: state.layer,
-    density: density,
+    layer: tileLayer,
     polygon: testPoly,
     min_zoom: 11,
     max_zoom: 11,
-    progress: progress.update.bind(progress),
     progressFrequency: 100
-  }, function (err, result) {
+  })
+}
+
+worldpop.addEventListener('message', function (ev) {
+  var type = ev.data.type
+  if (type === 'progress') {
+    progress.update(ev.data.result)
+  } else if (type === 'complete') {
+    var err = ev.data.error
+    var result = ev.data.result
+
     if (err) console.error(err)
 
     testPoly.properties = xtend(testPoly.properties, result)
-    map.updatePolygon(layer, testPoly)
+    map.updatePolygon(drawnLayer, testPoly)
 
     var geojsonResult = map.drawnPolygonsToGeoJSON()
     hash.update({ polygon: geojsonResult })
     download.setString(JSON.stringify(geojsonResult), 'application/json')
     results.classList.add('show')
     progress.finish(result)
-  })
-}
+  }
+})
 
-function density (feature) {
-  return feature.properties[state.densityProp] / state.multiplier
-}
