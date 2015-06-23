@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <title>WorldPop Data Explorer</title>
+    <meta name="description" content="The WorldPop project aims to provide an open access archive of spatial demographic datasets for Central and South America, Africa and Asia to support development and health applications.">
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+
+    <link rel="shortcut icon" href="https://developmentseed.org/assets/graphics/meta/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" type="text/css">
+    <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+    <link rel="stylesheet" href="css/normalize.min.css">
+  </head>
+  <body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div id="site-canvas">
+
+      <header id="site-header">
+        <h1 id="site-title">WorldPop Data Explorer <sup>beta</sup></h1>
+      </header>
+
+      <main id="site-body">
+        <section id="map-view" class="map-view">
+          <div id="map" class="map"></div>
+          <div id="progress" class="progress"></div>
+          <div id="helper">
+            <p>Draw a shape on the map and get the estimated population within that area.</p>
+            <p>Alternatively, drag and drop a GeoJSON file containing one or more polygons onto the map.</p>
+            <div class="results">
+              <p><a id="clear" class="clear" href="#">Clear Shapes</a></p>
+              <p><a id="download" class="download">Download Result as GeoJSON</a></p>
+            </div>
+          </div>
+        </section>
+        <section id="about-view">
+          <h2>About the Data</h2>
+          <p>Explore population data around the globe with the WorldPop Data Explorer. <a href="http://www.worldpop.org.uk/">WorldPop</a> is a premier open source high-resolution data source for population and demographic information.</br>WorldPop provides open access to spatial demographic datasets, covering aspects such as population counts, age structures, births, pregnancies and poverty.</p>
+          <p>All data is released under a CC-BY licensed and full available. Methodology can be found on <a href="http://www.worldpop.org.uk/data/methods/">WorldPop Methods page</a>.</p>
+        </section>
+      </main>
+
+      <footer id="site-footer">
+        Made with &hearts; by <a class=""
+          href="https://developmentseed.org">Development Seed</a>, <a
+          href="http://www.worldpop.org.uk">WorldPop</a> and the <a href="http://globalresiliencepartnership.org/">Global Resilience Partnership</a>. 
+        <div class="github">
+          Feedback?
+          <a
+            href="https://github.com/developmentseed/worldpop/issues">Submit an
+            issue on GitHub</a>.
+        </div>
+      </footer>
+
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-88478-50', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </body>
+</html>
