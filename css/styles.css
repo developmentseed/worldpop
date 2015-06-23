@@ -78,9 +78,9 @@ a:hover {
 /* Okay, this settles it: the CSS4-only approach is still too limited
  * for my satisfaction: mixins, or even just extends, would be good enough.
  */
-@custom-selector --message-box #helper, .draw-disabled .leaflet-draw-toolbar:after;
+@custom-selector :--message-box #helper, .draw-disabled .leaflet-draw-toolbar:after;
 
---message-box {
+:--message-box {
   padding: 16px;
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -89,7 +89,7 @@ a:hover {
   line-height: 20px;
 }
 
---message-box > p:last-of-type {
+:--message-box > p:last-of-type {
   margin-bottom: 0;
 }
 
