@@ -1,4 +1,3 @@
-window.myDebug = require('debug')
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
 
@@ -10,6 +9,11 @@ var DownloadLink = require('./app/download-link')
 var accessToken = require('./app/mapbox-access-token')
 var styles = require('./css/styles.css')
 styles()
+
+window.worldpop = {
+  worldpop: worldpop,
+  debug: require('debug')
+}
 
 var defaults = {
   source: 'devseed.isnka9k9',

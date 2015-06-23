@@ -4,7 +4,7 @@ module.exports = class ProgressBar {
   constructor (element) {
     element.innerHTML = `
     <div class="current">
-      <div class="loader">Loading...</div> 
+      <div class="loader">Loading...</div>
       Counted so far: <span id="current-count"></span> people.
     </div>
     `

@@ -3,13 +3,12 @@
 var xtend = require('xtend')
 var turfarea = require('turf-area')
 var through = require('through2')
+var throttle = require('lodash.throttle')
 var tiledData = require('./lib/tiled-data')
 var clip = require('./lib/clip')
 var fix = require('./lib/fix')
 var debug = require('debug')('polypop:main')
 var debugTotal = require('debug')('polypop:totalTime')
-
-var DEFAULT_PROGRESS_FREQ = 100
 
 module.exports = worldpop
 
@@ -31,8 +30,8 @@ module.exports = worldpop
  * @param {function} opts.progress - A progress callback, called periodically
  * with the current state of {totalPopulation, totalArea, polygonArea}. (You
  * can estimate % complete with totalArea/polygonArea.)
- * @param {Number} opts.progressFrequency - Frequency (in # of features) of
- * progress callback.
+ * @param {Number} opts.progressFrequency - Frequency in ms of the callback
+ * (default 100)
  * @param cb - completion callback, called with {totalPopulation, totalArea,
  * polygonArea}.
  * @return - a GeoJSON feature stream of constant-population polygon features,
@@ -40,13 +39,19 @@ module.exports = worldpop
  * propeties.
  */
 function worldpop (opts, cb) {
-  opts.min_zoom = opts.min_zoom || 8
-  opts.max_zoom = opts.max_zoom || 12
+  opts = xtend({
+    min_zoom: 8,
+    max_zoom: 12,
+    progressFrequency: 100
+  }, opts || {})
+
+  if (opts.progress) {
+    opts.progress = throttle(opts.progress, opts.progressFrequency)
+  }
 
   var poly = opts.polygon
   var source = typeof opts.source.pipe === 'function' ? opts.source :
     tiledData(opts.source, opts.layer, poly, opts)
-  var progressFrequency = opts.progressFrequency || DEFAULT_PROGRESS_FREQ
 
   var result = {
     count: 0,
@@ -66,9 +71,8 @@ function worldpop (opts, cb) {
       result.totalPopulation += feat.properties.population
       result.totalArea += feat.properties.area
       result.count++
-      if (opts.progress && result.count % progressFrequency === 0) {
-        var snap = xtend({}, result)
-        setTimeout(function () { opts.progress(snap) }, 0)
+      if (opts.progress) {
+        opts.progress(xtend({}, result))
       }
     })
 
