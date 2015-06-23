@@ -70,8 +70,8 @@ module.exports = class MapView {
     let props = annotatedPoly.properties
     // attach popup with population data
     var ppl = numeral(props.totalPopulation).format('0,0')
-    var area = Math.round(props.polygonArea / 1e4) / 1e2
-    var density = Math.round(ppl / area * 1e2) / 1e2
+    var area = numeral(props.polygonArea / 1e6).format('0,0.00')
+    var density = numeral(props.totalPopulation / area).format('0,0.0')
     newLayer.bindPopup(`
       <dl>
         <dt>Population</dt><dd>${ppl} persons</dd>
