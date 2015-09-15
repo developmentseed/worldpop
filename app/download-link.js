@@ -10,6 +10,7 @@ module.exports = class DownloadLink {
     }
     this.url = window.URL.createObjectURL(blob)
     this.element.setAttribute('href', this.url)
+    this.element.setAttribute('target', "_blank")
   }
 
   setString (string, type) {

@@ -63,7 +63,7 @@ function hashStateChange (newState) {
     results.classList.remove('show')
   }
   var {zoom, longitude, latitude} = state
-  map.setView({zoom, longitude, latitude})
+  // map.setView({zoom, longitude, latitude})
   map.setPolygon(state.polygon)
 }
 

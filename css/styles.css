@@ -8,7 +8,7 @@
   --warning-color: #CF7902;
   --line-height: 1.4;
   --global-radius: 2px;
-}
+} 
 
 *, *:before, *:after {
   -moz-box-sizing: border-box;
@@ -38,6 +38,14 @@ a:hover {
   opacity: 0.64;
 }
 
+a[title="Delete last point drawn"]{
+    opacity: 1;
+}
+
+a[title="Cancel drawing"]{
+    opacity: 1;
+}
+
 /* Sections */
 
 /* site header */
@@ -47,6 +55,7 @@ a:hover {
   padding: 16px;
   background: color(var(--base-font-color) tint(20%));
   color: #fff;
+  height:44px;
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
@@ -56,12 +65,23 @@ a:hover {
   line-height: 20px;
   text-transform: uppercase;
   font-weight: bold;
+  float: left;
 }
 
 #site-title sup {
   color: color(var(--base-font-color) tint(64%));
   font-size: 0.75em;
   top: -0.25em;
+}
+
+#about-title{
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  float: right;
 }
 
 /* site footer */
@@ -73,6 +93,10 @@ a:hover {
 #site-body {
   width: 100%;
   min-height: 90vh;
+}
+
+.leaflet-draw{
+
 }
 
 /* Okay, this settles it: the CSS4-only approach is still too limited
@@ -99,6 +123,24 @@ a:hover {
   top: 16px;
   right: 16px;
   width: 256px;
+  height: 200px;
+}
+
+.helper-initial{
+  margin:auto;
+  text-align: center;
+  width:190px;
+}
+
+#helper-footer{
+  position:absolute;
+  top: 160px;
+  width:200px;
+  text-align: center;
+} 
+
+#helper-footer i{
+  margin-left: 20px;
 }
 
 .results {
@@ -199,7 +241,7 @@ a.leaflet-draw-draw-polygon:after {
 .results.show { display: block; }
 
 .result-popup {
-  width: 25em;
+  width: 20em;
   opacity: .85 !important;
 }
 .result-popup dl {
@@ -213,6 +255,7 @@ a.leaflet-draw-draw-polygon:after {
   width: 45%;
 }
 .result-popup dt {
+  font-weight: bold;
   text-align: right;
 }
 .result-popup dd {
