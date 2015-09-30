@@ -48,6 +48,7 @@ hash.parse()
 dragDrop(document.body, function (files) {
   files.forEach(function (file) {
     map.setPolygon(JSON.parse(file))
+    map.setView({polygon: JSON.parse(file)})
   })
 })
 
