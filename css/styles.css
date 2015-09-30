@@ -137,10 +137,11 @@ a[title="Cancel drawing"]{
   top: 160px;
   width:200px;
   text-align: center;
-} 
+}
 
-#helper-footer i{
+#helper-footer i {
   margin-left: 20px;
+  cursor: pointer;
 }
 
 .results {
