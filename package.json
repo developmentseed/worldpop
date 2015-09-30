@@ -4,7 +4,7 @@
   "description": "Compute the population within a polygon from GeoJSON population data",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/*.js",
+    "test": "standard app.js index.js app/*.js lib/*.js test/*.js && tape test/*.js",
     "develop": "budo app.js:js/main.js --dir assets --verbose --live | garnish",
     "docs": "documentation index.js -f md > API.md"
   },
@@ -42,6 +42,7 @@
     "lodash.throttle": "^3.0.3",
     "nanobar": "^0.2.1",
     "numeral": "^1.5.3",
+    "standard": "^5.3.1",
     "through2": "^0.6.5",
     "tile-cover": "^2.4.1",
     "tilejson": "git://github.com/anandthakker/node-tilejson.git",
