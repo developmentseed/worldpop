@@ -39,6 +39,7 @@
     "geojson-stream": "0.0.0",
     "geojsonhint": "^1.0.0",
     "hash-change": "^0.1.0",
+    "hat": "0.0.3",
     "lodash.throttle": "^3.0.3",
     "nanobar": "^0.2.1",
     "numeral": "^1.5.3",

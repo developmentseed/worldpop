@@ -1,24 +1,41 @@
 global.window = global
-var worldpop = require('../')
+const worldpop = require('../')
 
 module.exports = function (self) {
+  const queue = []
+  let running = false
   self.addEventListener('message', function (ev) {
-    ev.data.progress = function progress (snapshot) {
-      self.postMessage({
-        type: 'progress',
-        result: snapshot
-      })
+    queue.push(ev)
+    if (!running) {
+      next()
     }
-    ev.data.density = density
-
-    worldpop(ev.data, function (err, result) {
-      self.postMessage({
-        type: 'complete',
-        error: err,
-        result: result
-      })
-    })
   })
+
+  function next () {
+    running = true
+    var ev = queue.shift()
+    if (ev) {
+      ev.data.progress = function progress (snapshot) {
+        self.postMessage({
+          type: 'progress',
+          result: snapshot
+        })
+      }
+      ev.data.density = density
+
+      worldpop(ev.data, function (err, result) {
+        self.postMessage({
+          drawnLayerId: ev.data.drawnLayerId,
+          type: 'complete',
+          error: err,
+          result: result
+        })
+        next()
+      })
+    } else {
+      running = false
+    }
+  }
 }
 
 function density (feature) {

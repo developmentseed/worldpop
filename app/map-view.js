@@ -154,7 +154,6 @@ module.exports = class MapView {
       ])
     } else {
       this.map.setZoom(options.zoom)
-      console.log(options)
       this.map.panTo([options.latitude, options.longitude])
     }
   }
@@ -164,8 +163,6 @@ module.exports = class MapView {
 // !!!!!!!!!!!!!!!!!!!!//
 function newPoly (props) {
   polygonDataArray.push(props)
-  console.log(polygonDataArray.length)
-  // yay
 
   // Hides 'draw a shape on the map...' block of text
   document.getElementById('helper-initial').style.display = 'none'
@@ -177,7 +174,6 @@ function newPoly (props) {
   }
 
   for (var i = 0; i < polygonDataArray.length; i++) {
-    console.log(polygonDataArray[i])
     var divmaker = document.createElement('div')
     divmaker.id = i + '_drawn-polygon-stats-block'
     divmaker.className = 'drawn-polygon-stats-block'
