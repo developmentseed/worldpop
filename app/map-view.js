@@ -1,10 +1,11 @@
-/* global L */
+ /* global L */
 var fc = require('turf-featurecollection')
 var extent = require('turf-extent')
 var numeral = require('numeral')
 
 var accessToken = require('./mapbox-access-token')
 var polyColor = '#0571b0'
+var PolygonDataArray = []
 
 module.exports = class MapView {
 
@@ -21,26 +22,49 @@ module.exports = class MapView {
     this.onPolygonChange = onPolygonChange
     L.mapbox.accessToken = accessToken
     this.map = window.themap = L.mapbox.map('map', 'devseed.3a52f684')
+    var map = this.map
 
     this.featureGroup = L.featureGroup().addTo(this.map)
-    new L.Control.Draw({
-      draw: {
-        polygon: {
-          allowIntersection: false,
-          drawError: {
-            color: '#e1e100',
-            message: 'Self-interecting polygons are not supported.'
-          },
-          shapeOptions: {
-            color: polyColor
-          }
+
+//!!!!!!!!!!!!!!!!!!!!//
+  // Draw Controls //
+//!!!!!!!!!!!!!!!!!!!!//
+    // Normal setup of draw control
+    var drawnItems = new L.FeatureGroup();
+    this.map.addLayer(drawnItems);
+
+    var drawControl = new L.Control.Draw({
+        draw: {
+            polygon: {
+                allowIntersection: false,
+                drawError: {
+                    color: '#e1e100',
+                    message: 'Self-interecting polygons are not supported.'
+                },
+                shapeOptions: {
+                    color: polyColor
+                }
+            },
+            polyline: false,
+            rectangle: false,
+            circle: false,
+            marker: false
         },
-        polyline: false,
-        rectangle: false,
-        circle: false,
-        marker: false
-      }
-    }).addTo(this.map)
+    });
+    //Turns on old draw controls
+    // this.map.addControl(drawControl);
+
+    //Attaches Draw Control to div
+    document.getElementById('shapedrawer').addEventListener("click", function(){
+      new L.Draw.Polygon(map, drawControl.options.polyline).enable();
+      new L.EditToolbar.Edit(map, {
+                featureGroup: drawControl.options.featureGroup,
+                selectedPathOptions: drawControl.options.edit.selectedPathOptions
+            })
+    });
+ //!!!!!!!!!!!!!!!!!!!//
+ // Draw Control Ends //
+ //!!!!!!!!!!!!!!!!!!!//
 
     this.map.on('draw:created', ({layer}) => onPolygonChange(layer))
     this.map.on('draw:edited', ({layers}) => layers.eachLayer(onPolygonChange))
@@ -58,6 +82,7 @@ module.exports = class MapView {
    * @param {GeoJSON} annotatedPoly - A GeoJSON polygon feature, annotated with
    * `totalPopulation`, `totalArea`, and `polygonArea` properties.
    */
+
   updatePolygon (layer, annotatedPoly) {
     let newLayer = L.geoJson(annotatedPoly, {
       style: function (feature) {
@@ -68,25 +93,29 @@ module.exports = class MapView {
     this.featureGroup.addLayer(newLayer)
 
     let props = annotatedPoly.properties
+
+    NewPoly(props)
+
     // attach popup with population data
     var ppl = numeral(props.totalPopulation).format('0,0')
     var area = numeral(props.polygonArea / 1e6).format('0,0.00')
     var density = numeral(props.totalPopulation / props.polygonArea * 1e6)
       .format('0,0.0')
-    newLayer.bindPopup(`
-      <dl>
-        <dt>Population</dt><dd>${ppl} persons</dd>
-        <dt>Area</dt><dd>${area} km<sup>2</sup></dd>
-        <dt>Density</dt><dd>${density} persons / km<sup>2</sup></dd>
-      </dl>
-    `, { className: 'result-popup' })
-    newLayer.openPopup()
+    // newLayer.bindPopup(`
+    //   <dl>
+    //     <dt>Population:</dt><dd>${ppl} persons</dd>
+    //     <dt>Area:</dt><dd>${area} km<sup>2</sup></dd>
+    //     <dt>Density:</dt><dd>${density} persons / km<sup>2</sup></dd>
+    //   </dl>
+    // `, { className: 'result-popup' })
+    // newLayer.openPopup()
   }
 
   /**
    * @param {string|GeoJSON} geojson - A GeoJSON polygon feature.
    */
   setPolygon (geojson) {
+
     var self = this
     this.featureGroup.eachLayer(function (layer) {
       self.featureGroup.removeLayer(layer)
@@ -129,4 +158,46 @@ module.exports = class MapView {
       this.map.panTo([options.latitude, options.longitude])
     }
   }
-}
+};
+//!!!!!!!!!!!!!!!!!!!!//
+// PolygonStatBars //
+//!!!!!!!!!!!!!!!!!!!!//
+function NewPoly(props){
+  PolygonDataArray.push(props)
+  console.log(PolygonDataArray.length)
+  //yay
+
+  // Hides 'draw a shape on the map...' block of text
+  document.getElementById("helper-initial").style.display = 'none';
+
+  //Clears away previous Bars when a new polygon is added
+  var elements = document.getElementsByClassName('drawn-polygon-stats-block')
+  while(elements.length > 0){
+    elements[0].parentNode.removeChild(elements[0]);
+  };
+
+  for (var i = 0; i < PolygonDataArray.length; i++) { 
+    console.log(PolygonDataArray[i]);
+      var divmaker = document.createElement('div');
+      divmaker.id = i+"_drawn-polygon-stats-block";
+      divmaker.className = 'drawn-polygon-stats-block';
+
+      document.getElementById("helper").appendChild(divmaker)
+      // document.querySelectorAll('.results').appendChild(divmaker);
+
+
+      divmaker.innerHTML = PolygonDataArray[i].totalPopulation+" ";
+  };
+//!!!!!!!!!!!!!!!!!!!!//
+// End PolygonStatBars//
+//!!!!!!!!!!!!!!!!!!!!//
+};
+
+//Sets up clear button to also reset the Polygon data and array
+document.getElementById('clear').addEventListener("click", function(){
+  var elements = document.getElementsByClassName('drawn-polygon-stats-block')
+  while(elements.length > 0){
+    elements[0].parentNode.removeChild(elements[0]);
+  };
+  PolygonDataArray = [];
+});

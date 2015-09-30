@@ -11,6 +11,7 @@
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
 
     <link rel="shortcut icon" href="https://developmentseed.org/assets/graphics/meta/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" type="text/css">
     <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
     <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
@@ -25,21 +26,36 @@
 
       <header id="site-header">
         <h1 id="site-title">WorldPop Data Explorer <sup>beta</sup></h1>
+        <h1 id="about-title"><a href="#about">About</a></h1>
       </header>
 
       <main id="site-body">
         <section id="map-view" class="map-view">
           <div id="map" class="map"></div>
           <div id="progress" class="progress"></div>
+
+<!--      !!!!!!!!!!!!
+          Helper Box
+          !!!!!!!!!!! -->
+
           <div id="helper">
-            <p>Draw a shape on the map and get the estimated population within that area.</p>
-            <p>Alternatively, drag and drop a GeoJSON file containing one or more polygons onto the map.</p>
+            <div id="helper-initial">
+              Draw a shape on the map and get the estimated population within that area. 
+            </div>
             <div class="results">
-              <p><a id="clear" class="clear" href="#">Clear Shapes</a></p>
-              <p><a id="download" class="download">Download Result as GeoJSON</a></p>
+            </div>
+            <div id='helper-footer'>
+              <p><a id="shapedrawer" title="Draw a shape" class="shapedrawer"><i class="fa fa-pencil-square-o fa-2x"></i></a>
+              <a id="download" title="Download GeoJSON of your shapes with population data." class="download"><i class="fa fa-download fa-2x"></i></a>
+              <a id="clear" title="Clear shapes" class="clear"><i class="fa fa-times-circle-o fa-2x"></i></a></p>
             </div>
           </div>
-        </section>
+
+<!--      !!!!!!!!!!!!
+          Helper Box
+          !!!!!!!!!!! -->
+
+          </section>
         <section id="about-view">
           <h2>About the Data</h2>
           <p>Explore population data around the globe with the WorldPop Data Explorer. <a href="http://www.worldpop.org.uk/">WorldPop</a> is a premier open source high-resolution data source for population and demographic information.</br>WorldPop provides open access to spatial demographic datasets, covering aspects such as population counts, age structures, births, pregnancies and poverty.</p>

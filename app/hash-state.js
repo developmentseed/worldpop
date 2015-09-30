@@ -55,6 +55,16 @@ module.exports = class HashState {
       .map((k) => [k, state[k]].map(encodeURIComponent).join('='))
       .join(',')
   }
+
+  clear () {
+    this.state = {
+      longitude: this.state.longitude,
+      latitude: this.state.latitude,
+      zoom: this.state.zoom
+    }
+    this.update()
+    this.onChange(this.state)
+  }
 }
 
 /*

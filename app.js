@@ -32,6 +32,10 @@ var map = new MapView('map', calculateTotal, onMapMove)
 var progress = new Progress(document.querySelector('#progress'))
 var download = new DownloadLink(document.querySelector('a.download'))
 
+document.querySelector('#clear').addEventListener('click', function (e) {
+  hash.clear()
+})
+
 var drawnLayer = null
 var testPoly = null
 
