@@ -50,8 +50,8 @@ function worldpop (opts, cb) {
   }
 
   var poly = opts.polygon
-  var source = typeof opts.source.pipe === 'function' ? opts.source :
-    tiledData(opts.source, opts.layer, poly, opts)
+  var source = typeof opts.source.pipe === 'function' ? opts.source
+    : tiledData(opts.source, opts.layer, poly, opts)
 
   var result = {
     count: 0,

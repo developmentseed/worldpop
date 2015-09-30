@@ -1,6 +1,7 @@
 var xtend = require('xtend')
 var dragDrop = require('drag-drop/buffer')
 var work = require('webworkify')
+var hat = require('hat')
 
 var worldpop = work(require('./app/worker.js'))
 var HashState = require('./app/hash-state')
@@ -11,6 +12,7 @@ var accessToken = require('./app/mapbox-access-token')
 var styles = require('./css/styles.css')
 styles()
 
+// expose these on window for debugging purposes
 window.worldpop = {
   worldpop: worldpop,
   debug: require('debug')
@@ -36,7 +38,7 @@ document.querySelector('#clear').addEventListener('click', function (e) {
   hash.clear()
 })
 
-var drawnLayer = null
+var drawnLayers = hat.rack()
 var testPoly = null
 
 // current hash options, updated in hashStateChange
@@ -46,6 +48,7 @@ hash.parse()
 dragDrop(document.body, function (files) {
   files.forEach(function (file) {
     map.setPolygon(JSON.parse(file))
+    map.setView({polygon: JSON.parse(file)})
   })
 })
 
@@ -73,10 +76,11 @@ function hashStateChange (newState) {
 
 function calculateTotal (layer) {
   progress.reset()
-  drawnLayer = layer
   testPoly = layer.toGeoJSON()
+  var drawnLayerId = drawnLayers({layer, testPoly})
 
   worldpop.postMessage({
+    drawnLayerId,
     source: tilesUri,
     layer: tileLayer,
     polygon: testPoly,
@@ -96,8 +100,9 @@ worldpop.addEventListener('message', function (ev) {
 
     if (err) console.error(err)
 
+    var {layer, testPoly} = drawnLayers.get(ev.data.drawnLayerId)
     testPoly.properties = xtend(testPoly.properties, result)
-    map.updatePolygon(drawnLayer, testPoly)
+    map.updatePolygon(layer, testPoly)
 
     var geojsonResult = map.drawnPolygonsToGeoJSON()
     hash.update({ polygon: geojsonResult })
