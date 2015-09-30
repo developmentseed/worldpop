@@ -32,6 +32,10 @@ var map = new MapView('map', calculateTotal, onMapMove)
 var progress = new Progress(document.querySelector('#progress'))
 var download = new DownloadLink(document.querySelector('a.download'))
 
+document.querySelector('#clear').addEventListener('click', function (e) {
+  hash.clear()
+})
+
 var drawnLayer = null
 var testPoly = null
 
@@ -63,7 +67,7 @@ function hashStateChange (newState) {
     results.classList.remove('show')
   }
   var {zoom, longitude, latitude} = state
-  // map.setView({zoom, longitude, latitude})
+  map.setView({zoom, longitude, latitude})
   map.setPolygon(state.polygon)
 }
 

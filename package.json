@@ -56,7 +56,6 @@
     "turf-intersect": "anandthakker/turf-intersect#kill-jsts",
     "turf-kinks": "^1.3.2",
     "turf-polygon": "^1.0.3",
-    "ua_parser": "^1.0.15",
     "vt-geojson": "^1.0.14",
     "xtend": "^4.0.0"
   },
