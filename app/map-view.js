@@ -1,7 +1,7 @@
  /* global L */
 var fc = require('turf-featurecollection')
 var extent = require('turf-extent')
-// var numeral = require('numeral')
+var numeral = require('numeral')
 
 var accessToken = require('./mapbox-access-token')
 var polyColor = '#0571b0'
@@ -181,7 +181,15 @@ function newPoly (props) {
     document.getElementById('helper').appendChild(divmaker)
     // document.querySelectorAll('.results').appendChild(divmaker)
 
-    divmaker.innerHTML = polygonDataArray[i].totalPopulation + ' '
+    var data = polygonDataArray[i]
+    var ppl = numeral(data.totalPopulation).format('0,0')
+    var area = numeral(data.polygonArea / 1e6).format('0,0.00')
+    var density = numeral(data.totalPopulation / props.polygonArea * 1e6)
+      .format('0,0.0')
+    divmaker.innerHTML = `
+      <div><strong>${ppl}</strong> persons / <strong>${area}</strong> km<sup>2</sup></div>
+      <div>(<strong>${density}</strong> persons / km<sup>2</sup>)</div>
+    `
   }
 // !!!!!!!!!!!!!!!!!!!!//
 // End PolygonStatBars//
