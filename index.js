@@ -4,7 +4,8 @@ var xtend = require('xtend')
 var turfarea = require('turf-area')
 var through = require('through2')
 var throttle = require('lodash.throttle')
-var tiledData = require('./lib/tiled-data')
+var vtGeoJson = require('vt-geojson')
+var cover = require('tile-cover')
 var clip = require('./lib/clip')
 var fix = require('./lib/fix')
 var debug = require('debug')('polypop:main')
@@ -50,8 +51,12 @@ function worldpop (opts, cb) {
   }
 
   var poly = opts.polygon
-  var source = typeof opts.source.pipe === 'function' ? opts.source
-    : tiledData(opts.source, opts.layer, poly, opts)
+  var source = opts.source
+  // if source isn't already a stream, get a feature stream using vt-geojson
+  if (typeof source.pipe !== 'function') {
+    var tiles = cover.tiles(poly.geometry, opts)
+    source = vtGeoJson(source, tiles, [opts.layer])
+  }
 
   var result = {
     count: 0,
@@ -62,10 +67,10 @@ function worldpop (opts, cb) {
 
   debugTotal('start', Date.now())
   var outputStream = source
-    .pipe(fix())
-    .pipe(clip(poly))
+    .pipe(fix()) // strip out weird degenerate polygons caused by tile clipping
+    .pipe(clip(poly)) // clip the worldpop data to the selected polygon
     .pipe(through.obj(function write (feat, _, next) {
-      next(null, popped(opts.density, poly, feat))
+      next(null, attachCalculations(opts.density, poly, feat))
     }))
     .on('data', function (feat) {
       result.totalPopulation += feat.properties.population
@@ -89,7 +94,7 @@ function worldpop (opts, cb) {
   return outputStream
 }
 
-function popped (densityFn, poly, feat) {
+function attachCalculations (densityFn, poly, feat) {
   var density = densityFn(feat)
   feat.properties.area = turfarea(feat)
   feat.properties.population = feat.properties.area * density
