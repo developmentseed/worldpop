@@ -26,9 +26,9 @@ are very welcome!
 
 ## Related Repositories:
 
- - [worldpop-data](/developmentseed/worldpop-data): the data processing
+ - [worldpop-data](http://www.github.com/developmentseed/worldpop-data): the data processing
    pipeline, taking WorldPop GeoTIFFs and producing Mapbox Vector Tiles.
- - [worldpop-basemap.tm2](/developmentseed/worldpop-basemap.tm2): the
+ - [worldpop-basemap.tm2](http://www.github.com/developmentseed/worldpop-basemap.tm2): the
    Mapbox Studio project for the web app's base map.
 
 # Node API
